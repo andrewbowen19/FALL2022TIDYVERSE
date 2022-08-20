@@ -57,3 +57,37 @@ religions %>%
            caption = "https://en.wikipedia.org/wiki/List_of_religious_populations") + coord_flip()
 ```
 
+## 2A: How do I change sort order?
+Revised by: Andy Catlin
+
+Q: How do we change the chart to show the most followed religions first?
+A: Use forcats::fct_reorder()
+
+```{r}
+library(forcats) 
+
+ggplot(religions, aes(x = fct_reorder(religion, millions_of_followers), 
+                      y = millions_of_followers)) + 
+  geom_col(fill = "lightblue") + 
+  labs(x = "religion", y = "millions of followers", 
+      caption = "https://en.wikipedia.org/wiki/List_of_religious_populations") + 
+  coord_flip()
+```
+
+## 2B: How do I combine less frequently used categories?
+
+Q: How do we combine the less-followed religions into a single group?
+A: Use forcats::fct_other()
+
+```{r}
+top5 = unlist(select(head(arrange(religions, desc(millions_of_followers)), 5), religion))
+
+religions %>% 
+  mutate(religion = fct_other(religion, keep = top5, other_level = "Other religions")) %>%     
+  ggplot(aes(x = fct_reorder(religion, millions_of_followers), y = millions_of_followers)) +
+    geom_col(fill = "lightblue") + 
+    labs(x = "religion", y = "millions of followers", 
+        caption = "https://en.wikipedia.org/wiki/List_of_religious_populations") + 
+        coord_flip()
+```
+
