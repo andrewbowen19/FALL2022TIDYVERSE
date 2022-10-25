@@ -13,6 +13,8 @@ vignette: >
 library(tidyverse)
 ```
 
+
+## Data Collection
 I chose the [House of Representatives historical polling dataset from FiveThirtyEight](https://projects.fivethirtyeight.com/polls/). I'd like to read in the csv file (hosted on our GitHub) and convert it into a `tibble` to demo some [tidyverse functions](https://www.tidyverse.org/packages/) available to [`tibble` objects](https://tibble.tidyverse.org)
 ```{r}
 data_url <- "https://raw.githubusercontent.com/andrewbowen19/FALL2022TIDYVERSE/main/data/house_polls_historical.csv"
@@ -23,14 +25,14 @@ df <- read.csv(data_url)
 tbl_df <- as_tibble(df)
 head(tbl_df)
 ```
-
+## Data Aggregation
 
 Showing off some `forcats` functions as well. Let's see a count of total polls by pollster, using the `fct_count` function on our tibble.
 ```{r}
 fct_count(tbl_df$pollster, sort=TRUE)
 ```
 
-
+## Data Visualization
 Let's plot the polling percentages of the major parties (republicans and democrats)
 ```{r}
 major_parties <- tbl_df %>%
