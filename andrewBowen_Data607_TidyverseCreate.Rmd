@@ -1,0 +1,55 @@
+---
+title: "Andrew Bowen DATA607 Tidyverse Create"
+author: "Andrew Bowen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, message=FALSE}
+library(tidyverse)
+```
+
+I chose the [House of Representatives historical polling dataset from FiveThirtyEight](https://projects.fivethirtyeight.com/polls/). I'd like to read in the csv file (hosted on our GitHub) and convert it into a `tibble` to demo some [tidyverse functions](https://www.tidyverse.org/packages/) available to [`tibble` objects](https://tibble.tidyverse.org)
+```{r}
+data_url <- "/Users/andrewbowen/CUNY/FALL2022TIDYVERSE/data/house_polls_historical.csv"
+
+df <- read.csv(data_url)
+
+# Converting
+tbl_df <- as_tibble(df)
+head(tbl_df)
+```
+
+
+Showing off some `forcats` functions as well. Let's see a count of total polls by pollster, using the `fct_count` function on our tibble.
+```{r}
+fct_count(tbl_df$pollster, sort=TRUE)
+```
+
+
+Let's plot the polling percentages of the major parties (republicans and democrats)
+```{r}
+major_parties <- tbl_df %>%
+                        filter(party == "DEM" | party == "REP")
+
+ggplot(major_parties, aes(x = pct, color=party)) +
+    geom_histogram(binwidth=5, fill="white") +
+    scale_color_manual(values=c("blue", "red"))
+
+```
+
+Let's also make a bar chart to show the average polling % by party. Let's also make a bar graph showing the parties with an average polling percentage above 3%
+```{r}
+avg_pct_by_party <- tbl_df %>%
+      group_by(party) %>%
+      summarise(avg_pct = mean(pct)) %>%
+      filter(avg_pct > 3.0)
+
+ggplot(avg_pct_by_party, aes(x = party, y= avg_pct)) + geom_bar(stat='identity') +
+    ylab("Average Polling %") + xlab("Political Party")
+```
+
