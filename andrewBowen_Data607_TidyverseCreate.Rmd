@@ -15,7 +15,7 @@ library(tidyverse)
 
 I chose the [House of Representatives historical polling dataset from FiveThirtyEight](https://projects.fivethirtyeight.com/polls/). I'd like to read in the csv file (hosted on our GitHub) and convert it into a `tibble` to demo some [tidyverse functions](https://www.tidyverse.org/packages/) available to [`tibble` objects](https://tibble.tidyverse.org)
 ```{r}
-data_url <- "/Users/andrewbowen/CUNY/FALL2022TIDYVERSE/data/house_polls_historical.csv"
+data_url <- "https://raw.githubusercontent.com/andrewbowen19/FALL2022TIDYVERSE/main/data/house_polls_historical.csv"
 
 df <- read.csv(data_url)
 
