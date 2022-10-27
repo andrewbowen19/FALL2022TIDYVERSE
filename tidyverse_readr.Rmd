@@ -44,7 +44,8 @@ chickens <- read_csv(readr_example("chickens.csv"),
 )
 chickens
 ```
-The column types have now been set correctly. A compact way of providing column types is by using a string of positional types. For example, `cfi` to read first column as character, second as float, and third as integer. To skip columns useunderscore character.
+
+The column types have now been set correctly. A compact way of providing column types is by using a string of positional types. For example, `cfi` to read first column as character, second as float, and third as integer. To skip columns underscore character.
 
 ```{r}
 chickens <- read_csv(readr_example("chickens.csv"),
