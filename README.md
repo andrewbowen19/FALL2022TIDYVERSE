@@ -7,6 +7,5 @@ Initial Description and Link:
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
 
 
-Revision/Addition Description and Link:
-* Modified ggplot/forcats example to demonstrate sorting, other category
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+Demonstrate TidyVerse package dylpr:
+* [https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd](https://github.com/melbow2424/FALL2022TIDYVERSE/blob/main/Tidyverse_packages_Example_Melissa_Bowman_RMarkdown.Rmd)
