@@ -1,12 +1,7 @@
-# FALL2022TIDYVERSE
-DATA 607 Fall 2022 Tidyverse collaboration site
 
-# Sample
-Initial Description and Link: 
-* Demonstrates how to flip ggplot axes
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+* Example to demonstrate dplyr, ggplot2, stringr, forcats libraries of tidyverse package
+* https://github.com/ex-pr/DATA607/blob/tidyverse_create/DDubovskaia_TidyVerse_CREATE.Rmd
 
-
-Revision/Addition Description and Link:
-* Modified ggplot/forcats example to demonstrate sorting, other category
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+Russia investigation Data
+* [FiveThirtyEight dataset](https://projects.fivethirtyeight.com/russia-investigation/)
+* [Vignette](https://github.com/ex-pr/DATA607/blob/tidyverse_create/DDubovskaia_TidyVerse_CREATE.Rmd)
