@@ -1,0 +1,66 @@
+---
+title: "tidyverse_wilson"
+author: "Wilson Ng"
+date: "2022-10-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+data <- read.csv("/Users/WN/Desktop/summer2022bridge/FALL2022TIDYVERSE/archive/allDogDescriptions.csv")
+
+head(data)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r deleting-columns}
+data %>% transmute(
+  id,
+  org_id,
+  url,
+  species,
+  breed_primary,
+  breed_secondary,
+  breed_mixed,
+  breed_unknown,
+  color_primary,
+  color_secondary,
+  color_tertiary,
+  age,
+  sex,
+  size,
+  coat,
+  fixed,
+  house_trained,
+  declawed,
+  special_needs,
+  shots_current,
+  good_w_children = env_children,
+  good_w_dogs = env_dogs,
+  good_w_cats = env_cats,
+  name,
+  status, 
+  posted,
+  contact_city,
+  contact_state,
+  contact_zip,
+  contact_country,
+  description
+) %>% filter(status == "adoptable" & good_w_dogs == "True")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
