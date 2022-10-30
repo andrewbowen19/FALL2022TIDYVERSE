@@ -11,24 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## importing data
 
 ```{r}
-data <- read.csv("/Users/WN/Desktop/summer2022bridge/FALL2022TIDYVERSE/archive/allDogDescriptions.csv")
+data <- read.csv("https://raw.githubusercontent.com/wilsonvetdev/FALL2022TIDYVERSE/main/archive/allDogDescriptions.csv")
 
 head(data)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
+## cleaning the columns with transmute, filtering for adoptable dogs that are also good with other dogs, and finding the count per breed.
 
 ```{r deleting-columns}
-data %>% transmute(
+data <- data %>% transmute(
   id,
   org_id,
   url,
@@ -60,7 +54,12 @@ data %>% transmute(
   contact_zip,
   contact_country,
   description
-) %>% filter(status == "adoptable" & good_w_dogs == "True")
+) %>% 
+  filter(status == "adoptable" & good_w_dogs == "True")
+
+data %>% 
+  group_by("breed_primary") %>%
+  count("breed_primary") %>%
+  arrange(desc(freq))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
