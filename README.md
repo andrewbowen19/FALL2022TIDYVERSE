@@ -1,12 +1,13 @@
 # FALL2022TIDYVERSE
 DATA 607 Fall 2022 Tidyverse collaboration site
 
-# Sample
+# Data
 Initial Description and Link: 
-* Demonstrates how to flip ggplot axes
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+* https://www.kaggle.com/datasets/whenamancodes/dog-adoption?resource=download
 
+# Dplyr Cheat Sheet
+* https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf
 
-Revision/Addition Description and Link:
-* Modified ggplot/forcats example to demonstrate sorting, other category
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+# Tidyverse Assignment
+* Imported data
+* Experimented with the transmute, filter, grouping, and summarizing functions.
