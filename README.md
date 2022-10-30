@@ -3,7 +3,7 @@ DATA 607 Fall 2022 Tidyverse collaboration site
 
 # Sample
 Initial Description and Link: 
-* Demonstrates how to flip ggplot axes
+* Demonstrates how to perform data manipulation with dplyr package
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/607_create_tv.rmd
 
 I am using housing rent dataset from kaggle which has followign variables:
