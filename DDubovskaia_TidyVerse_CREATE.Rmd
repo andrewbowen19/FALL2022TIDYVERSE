@@ -1,0 +1,116 @@
+---
+title: "TidyVerse CREATE assignment"
+author: "Daria Dubovskaia"
+output: html_document
+---
+
+```{r setup, include=FALSE, results='hide', warning=FALSE, message=FALSE}
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(forcats)
+```
+
+
+Your task here is to Create an Example. Using one or more TidyVerse packages, and any dataset from fivethirtyeight.com or Kaggle, create a programming sample “vignette” that demonstrates how to use one or more of the capabilities of the selected TidyVerse package with your selected dataset. (25 points) \
+
+Later, you’ll be asked to extend an existing vignette. Using one of your classmate’s examples (as created above), you’ll then extend his or her example with additional annotated code. (15 points)\
+
+You should clone the provided repository. Once you have code to submit, you should make a pull request on the shared repository. You should also update the README.md file with your example.\
+
+After you’ve created your vignette, please submit your GitHub handle name in the submission link provided below. This will let your instructor know that your work is ready to be peer-graded.\
+
+You should complete your submission on the schedule stated in the course syllabus.\
+
+### 1. Load data
+We will use the data behind the story "Is The Russia Investigation Really Another Watergate?" to show the features of the tidyverse package. \
+The file will be downloaded from the Github repository to csv file using read.csv function. russia-investigation.csv contains every special investigation since the Watergate probe began in 1973 and who was charged in them. The data set contains 194 observations of 13 variables.\
+The dataset source: https://github.com/fivethirtyeight/data/tree/master/russia-investigation
+```{r}
+data <- read.csv('https://raw.githubusercontent.com/ex-pr/DATA607/tidyverse_create/russia-investigation.csv', header=TRUE, sep=",", check.names=FALSE)
+```
+
+```{r}
+summary(data)
+head(data, n=3)
+```
+
+### 2. Dplyr package
+Dplyr package is one of the most useful part of the tidyverse library. Dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges. In this vignette we will consider the main functions of dplyr package: rename(), filter(), select(), distinct(), mutate(), group_by(), arrange(), summarise(). The dplyr provides the pipe %>% operator, so the result from one step is then “piped” into the next step df %>% f(y). \
+
+#### 2.1 Rename()
+Rename() changes the names of individual variables using new_name = old_name syntax, we will rename some columns to make it more readable using rename() function of dplyr package.
+```{r warning=FALSE, message=FALSE}
+investigation <- data %>% 
+           rename("id"="investigation",
+           "start_date" = "investigation-start",  "end_date" = "investigation-end", "convict_date" = "cp-date")
+```
+
+#### 2.2 Filter()
+Filter function allows us to select a subset of rows in a data frame based on the condition. The first argument is the tibble/ data frame, the further arguments refer to variables within that data frame. \
+We can check the investigations that happened under Bill Clinton and check persons who weren't pardoned.
+```{r}
+investigation %>% filter(president == "Bill Clinton", pardoned == "TRUE")
+```
+#### 2.3 Select(), Distinct()
+Select function changes whether or not a column is included in case we need only several columns instead of the entire data frame, the first argument is the data frame/tibble, the further arguments are one or more unquoted expressions separated by commas. \
+Distinct function select only unique/distinct rows from a data frame.The first argument is a data frame/tibble, the further arguments are optional variables to use when determining uniqueness.\
+We will select column name withe the names of all the persons charged. There are only 178 unique names among 194 investigations, some people were charged several times.
+```{r}
+names <- investigation %>% select(name)  %>% distinct()
+summary(names)
+head(names)
+```
+
+#### 2.4 Mutate(), stringr library
+Mutate() changes the values of columns and creates new columns. Arguments are data frame/tibble, name-value pairs (the name gives the name of the column in the output), keep (control which columns from .data are retained in the output), before, after (optionally, control where new columns should appear).\
+Mutate_at affects variables selected with a character vector or vars(). \
+In this example, we see another library of the tidyverse package "stringr" which provides a cohesive set of functions designed to make working with strings as easy as possible. The function str_replace() that replaces the matches with new text.
+We will use mutate to change the values in columns 'overturned', 'pardoned', 'american' from TRUE/FALSE to Yes/No.
+```{r warning=FALSE, message=FALSE}
+investigation <- investigation %>% 
+  mutate_at(c('overturned', 'pardoned', 'american'),funs(str_replace(., "TRUE", "Yes")))  %>% 
+  mutate_at(c('overturned', 'pardoned', 'american'),funs(str_replace(., "FALSE", "No")))
+head(investigation)
+```
+
+#### 2.5 Group_by(), Arrange(), Summarise()
+**Group_by()** takes an existing tbl and converts it into a grouped data frame/tibble where operations are performed "by group". Arguments are a data frame/tibble, variables or computations to group by, .add (FALSE will override existing groups, .add = TRUE will add to the existing groups), .drop (drop groups formed by factor levels that don't appear in the data).\
+**Arrange()** function changes the order of the rows by the values of selected columns. The arguments are .data (data frame/tibble), variables, or functions of variables (use desc() to sort a variable in descending order), .by_group (TRUE will sort first by grouping variable). \
+**Summarise()** collapses a group into a single row, it will have one (or more) rows for each combination of grouping variables. The arguments are .data, name-value pairs of summary functions. The name will be the name of the variable in the result, .groups (grouping structure of the result).\
+We see that the most number of charges were for the investigation called "watergate". First, group_by id, after we count how many repetitions we have for each id and arrange the results in desc order.
+```{r}
+investigation %>% 
+  group_by(id) %>% 
+  summarize(investigation_total=n()) %>% 
+  arrange(desc(investigation_total))
+```
+
+### 3. ggplot2, forcats
+ggplot2() is a plotting package that provides helpful commands to create complex plots from data in a data frame. The graphics are built layer by layer by adding new elements. Adding layers in this fashion allows for extensive flexibility and customization of plots.\
+We will plot the graph to find out which president had the most number of investigations during the term. It was Richard Nixon.\
+The arguments of ggplot() are the data frame/tibble, mapping (default list of aesthetic mappings to use for plot). We have added the type of the plot - bar using geom_bar() with the blue color (also we can use geom_point(), geom_boxplot(), geom_line(), geom_col(). etc), theme_light() made our plot with the white background instead of grey, theme() is used to define text and the position of text on the graph, labs() will define labels and title of the plot.\
+Another tidyverse library is forcats, the library provides a suite of tools that solve common problems with factors, including changing the order of levels or the values. The function fct_infreq(): Reordering a factor by the frequency of values.\
+```{r}
+ggplot(investigation, aes(x=fct_infreq(president))) + 
+  geom_bar(fill='blue') + 
+  theme_light() +
+  theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 10, angle = 90))+
+  labs(x = 'President', y = "# of investigations", title = "# of investigations for each president")
+```
+
+Using geom_point(), we can build the plot to find out which investigation was the longest. It was cisneros, more than 3,000 days.\
+```{r}
+ggplot(investigation, aes(x=id, y=`investigation-days`)) + 
+  geom_point (color="red") + 
+  theme_light() +
+  theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(angle = 90))+
+  labs(x = 'Investigation name', y = "# of days", title = "Length, in days, of the investigation")
+```
+
+### Conclusion
+Tidyverse package is an irreplaceable tool to transform messy data sets into the convenient for analysis format. In this “vignette” we demonstrated how to use dplyr, ggplot2, stringr, forcats libraries of the tidyVerse package. There are more to discover within each of the libraries mentioned above as well as tidyverse package contains a lot of other libraries that were not mentioned in the current “vignette” such as tidyr, tibble, purrr.
+
+
+
