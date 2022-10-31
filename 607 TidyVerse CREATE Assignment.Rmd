@@ -1,0 +1,84 @@
+---
+title: "607 TidyVerse CREATE Assignment"
+output: html_document
+date: "2022-10-30"
+---
+## Assignment: Create an Example using one or more TidyVerse packages, and any dataset from fivethirtyeight.com or Kaggle to create a programming sample “vignette” that demonstrates how to use one or more of the capabilities of the selected TidyVerse package with your selected dataset.
+
+# 1) Choose Dataset
+We will be working with the 1st file of russian-troll-tweets from fivethirtyeight.com titled 'IRAhandle_tweets_1.csv'. The full dataset includes 3 million Russian troll tweets from accounts associated with the Internet Research Agency based in St. Petersburg, Russia that "campaigned to sow disinformation and discord into American politics via social media."
+
+Original Data: https://github.com/fivethirtyeight/russian-troll-tweets
+Featured Article: https://fivethirtyeight.com/features/why-were-sharing-3-million-russian-troll-tweets/
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 2) Identify the list of packages in tidyverse to choose from
+```{r}
+library(tidyverse)
+tidyverse_packages()
+```
+# 3) We will be exploring the tidyverse package readxl so the first step is to prepare the file for our examples and saving in our directory (see final dataset in the shared repository titled 'IRAhandle_tweets_1 -Added Summary sheet')
+
+a) Convert the csv file to xlsx and save on my directory.
+b) File be too large for Github so made the following adjustments:
+-Removed last 7 columns: new_june_2018,	alt_external_id,	tweet_id,	article_url,	tco1_step1,	tco2_step1, tco3_step1
+-Deleted tweets where the language was not English
+c) Create new sheet called 'Summary' which includes 2 tables summarizing Account Type, Region and Count of Tweets 
+```{r}
+library(readxl)
+# List files in directory
+list.files(recursive = TRUE, include.dirs = TRUE)
+# Set path to excel spreadsheet
+path = "IRAhandle_tweets_1 -Added Summary sheet.xlsx"
+```
+# Import file with read_excel function
+# What if we do not specify anything besides the file path?
+```{r}
+full.content <- read_excel(path)
+str(full.content)
+```
+
+# What if we only want the first 50 tweets instead of all 190,252?
+# cell_rows function
+```{r}
+first50 <-  read_excel(path, range = cell_rows(c(1, 51)))
+str(first50)
+```
+# What if we want all 190,252 tweets, but only want the first 3 columns?
+# cell_cols function
+```{r}
+col123 <-  read_excel(path, range = cell_cols(c(1, 3)))
+str(col123)
+```
+# What if we want to specify both the columns and rows? Let's load the first 50 tweets with only the author and content variables
+# anchored function
+```{r}
+# Anchored allows user to specify a targetted cell rectangle via an upper left anchor cell (B1 is Author column name) and the rectangle's row and column extent
+anch_ex <-  read_excel(path, range = anchored("B1", dim = c( 51, 2) ) )
+str(anch_ex)
+```
+
+# We can see above that if no sheet is specified as an argument then the read_excel default is importing only the first sheet, but what if we want to load a different sheet?  First, what sheets are contained in the spreadsheet?
+# excel_sheets function
+```{r}
+# Lists the sheet names
+excel_sheets(path)
+```
+# Import the 'Summary' sheet
+```{r}
+sheet <- read_excel(path, sheet = "Summary")
+as_tibble(sheet)
+```
+# We can see the data in the Summary sheet was imported this time, but we can see that it loaded both tables as 1 dataset so let's use the anchored function to make 2 separate objects
+# anchored function
+```{r}
+Acct_Category <- read_excel(path, sheet = "Summary", range = anchored("A3", dim = c( 10, 2) ) )
+as_tibble(Acct_Category)
+```
+```{r}
+Region <- read_excel(path, sheet = "Summary", range = anchored("E3", dim = c( 16, 10) ) )
+as_tibble(Region)
+```
+
