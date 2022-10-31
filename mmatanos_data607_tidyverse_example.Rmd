@@ -1,12 +1,9 @@
 ---
-title: "DATA 607: Data Acquisition and Management"
+title: 'DATA 607: Data Acquisition and Management'
 author: "Melvin Matanos, Fall 2022"
-subtitle: "Week 10 - Tideyverse Create Assignment"
 date: "10/27/2022"
-output:
-  html_document: default
-  word_document: default
-  pdf_document: default
+output: rmarkdown::html_vignette
+output:rmarkdown::html_vignette: default
 ---
 
 ```{r setup, include=FALSE}
@@ -24,7 +21,7 @@ I will demosntrate the purrr::map() and purrr::pmap() function with the use of p
 The data set can be found in (https://github.com/CSSEGISandData/COVID-19).
 (https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_daily_reports_us/12-31-2021.csv) 
 
-# Loadin the required libraries
+# Loading the required libraries
 
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
