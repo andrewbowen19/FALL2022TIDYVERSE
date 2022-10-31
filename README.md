@@ -3,10 +3,7 @@ DATA 607 Fall 2022 Tidyverse collaboration site
 
 # Sample
 Initial Description and Link: 
-* Demonstrates how to flip ggplot axes
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+* Demonstrates features of tidyverse: dplyr, ggplot2, purrr
+* https://raw.githubusercontent.com/Raji030/data607_tidyverse_create/main/data607_tidyverse_create_assignment.Rmd
 
 
-Revision/Addition Description and Link:
-* Modified ggplot/forcats example to demonstrate sorting, other category
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
