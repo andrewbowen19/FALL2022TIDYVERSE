@@ -1,5 +1,5 @@
 ---
-title: "Dyplyr to Look at Crop Production & Climate Change"
+title: "Dplyr to Look at Crop Production & Climate Change"
 author: "Sangeetha Sasikumar"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
