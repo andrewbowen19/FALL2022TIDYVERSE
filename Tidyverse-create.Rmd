@@ -67,7 +67,7 @@ data%>%
 ```
 
 ##Arrange method
-The final method in Tidyverse's `dyplyr` package is "arrange". Arrange() puts the rows in the order we need them to be in. In the code below, the field "Value" was put in descending order. 
+The final method in Tidyverse's `dplyr` package is "arrange". Arrange() puts the rows in the order we need them to be in. In the code below, the field "Value" was put in descending order. 
 ```{r}
 data %>%
   group_by(INDICATOR) %>%
