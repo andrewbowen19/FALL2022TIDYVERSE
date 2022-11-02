@@ -1,0 +1,164 @@
+---
+title: "Data_607_TidyVerse_CREATE_Assignment_Vignette.rmd"
+author: "Enid Roman"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data_607_TidyVerse_CREATE_Assignment.rmd}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+###**INTRODUCTION**
+
+#### Which State Has The Worst Drivers?
+
+###**DATA BACKGROUND**
+
+#### This dataset, "bad-drivers" is from Fivethirtyeight. This data shows America’s bad drivers in all the states, involved in collisions. 
+
+#### The data contains the following fields:
+
+#### State
+#### Number of drivers involved in fatal collisions per billion miles
+#### Percentage Of Drivers Involved In Fatal Collisions Who Were Speeding
+#### Percentage Of Drivers Involved In Fatal Collisions Who Were Alcohol-Impaired
+#### Percentage Of Drivers Involved In Fatal Collisions Who Were Not Distracted
+#### Percentage Of Drivers Involved In Fatal Collisions Who Had Not Been Involved In Any Previous Accidents
+#### Car Insurance Premiums ($)
+#### Losses incurred by insurance companies for collisions per insured driver ($)
+
+###**RESOURCES**
+
+#### Data is collected by the National Highway Traffic Safety Administration 2009 and 2012 (NHTSA) (https://www-fars.nhtsa.dot.gov/Main/index.aspx) and National Association of Insurance Commissioners 2010 & 2011(website was not provided).
+
+#### Data is by Mona Chalabi from FiveThirtyEight and is available online here: https://github.com/fivethirtyeight/data/tree/master/bad-drivers For this project, the data was uploaded by calling the URL and using the read_table() function.
+
+###**PACKAGES**
+
+#### Package used is tidyverse. It includes readr, dplyr, tidyr, ggplot2, stringr, tibble, forcats and purr packages.
+
+```{r}
+#Upload tidyverse, ggplot2, and dplyr libraries.
+
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(infer)
+```
+
+###**ANALYSIS**
+
+###**SECTION 1:LOAD THE DATA**
+
+#### read_csv() function is from readr package, used for reading flat file data with comma separated values.
+
+```{r}
+# Load the dataset from fivethirtyeight.com and read the dataset with read.csv.
+
+theUrl <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/bad-drivers/bad-drivers.csv"
+
+worst_drivers <- read.csv(file=theUrl, header=TRUE, sep=",")
+
+head(worst_drivers)
+```
+
+###**SECTION 2: EXPLORATORY DATA ANALYSIS/CHECKING ASSUMPTION**
+###**SECTION 3: SUMMARY STATISTICS**
+
+#### glimpse() function is from tibble package, used to see column names, how many rows, how many columns, and type of variables in a data frame
+
+```{r}
+# Checking the columns name and how many rows and columns and variables type in that particular column. 
+
+glimpse(worst_drivers)
+```
+
+#### colnames() is from dplyr package. Is used to obtain or set the names of the row and column of a matrix-like object, respectively.
+
+```{r}
+# Rename the columns for easier reading.
+
+colnames(worst_drivers) <- c("STATE", 
+                           "DRIVERS_INVOLVED", 
+                           "PERC_DRIVERS_SPEED", 
+                           "PERC_DRIVERS_ALCHO", 
+                           "PERC_DRIVERS_NOT_DIST", 
+                           "PERC_DRIVERS_NO_ACC", 
+                           "INS_PREM", 
+                           "LOSS_INSCOMP")
+
+glimpse(worst_drivers)
+```
+
+### **DATA WRANGLING/VISUALIZATION USING DPLYR, TIDYR, AND GGPLOT2** 
+
+#### Columns PERC_DRIVERS_SPEED, PERC_DRIVERS_ALCHO, PERC_DRIVERS_NOT_DIST, PERC_DRIVERS_NO_ACC are percentages of DRIVERS_INVOLVED. I will mutate new columns DRIVERS_SPEED, DRIVERS_ALCHO, DRIVERS_NOT_DIST, DRIVERS_NO_ACC by taking the given percentage of DRIVERS_INVOLVED column.
+
+#### mutate() function is from dplyr package, adds new variables and preserves existing ones.
+
+```{r}
+# Create new column DRIVERS_SPEED which will be (DRIVERS_INVOLVED*PERC_DRIVERS_SPEED)/100
+
+percent_worst_drivers <- worst_drivers %>% 
+  mutate(DRIVERS_SPEED=(DRIVERS_INVOLVED*PERC_DRIVERS_SPEED)/100) %>% 
+  mutate(DRIVERS_ALCHO=(DRIVERS_INVOLVED*PERC_DRIVERS_ALCHO)/100) %>% 
+  mutate(DRIVERS_NOT_DIST=(DRIVERS_INVOLVED*PERC_DRIVERS_NOT_DIST)/100) %>% 
+  mutate(DRIVERS_NO_ACC=(DRIVERS_INVOLVED*PERC_DRIVERS_NO_ACC)/100)
+
+glimpse(percent_worst_drivers)
+```
+
+###**SECTION 4: VISUALIZING THE RESULTS**
+
+#### Create a stacked bar plot using ggplot() method having states on X axis and DRIVERS_SPEED and DRIVERS_INVOLVED stacked together on Y axis. We use select() method to get required columns. The gather() method to make data long for DRIVERS_INVOLVED and DRIVERS_SPEED and finally use ggplot() to draw stacked bar plot.
+
+#### select() function is from dplyr package that keeps only the variables we mention.
+#### gather() function is from tidyr package that takes multiple columns and collapses into key-value pairs, duplicating all other columns as needed.
+#### ggplot() All ggplot2 plots begin with a call to ggplot().
+
+```{r}
+percent_worst_drivers %>% 
+  select(STATE, DRIVERS_INVOLVED, DRIVERS_SPEED) %>% 
+  gather(type, value, DRIVERS_INVOLVED:DRIVERS_SPEED) %>% 
+  ggplot(., aes(x = STATE,y = value, fill = type)) + 
+  geom_bar(position = "stack", stat="identity") + 
+  scale_fill_manual(values = c("red", "darkred")) + 
+  ylab("Drivers involved in Fatal collision while Speeding") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+
+#### Below plot of for STATE vs INS_PREMIUM that used ggplot() method to creat a bar plot.
+
+```{r}
+percent_worst_drivers %>% 
+  ggplot(., aes(x = STATE,y = INS_PREM)) + 
+  geom_bar(position = "stack", stat="identity") + 
+  ylab("Car Insurance Premium") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+
+```
+
+###**CONCLUSION**
+
+#### I discussed various packages and their functions to explore bad drivers dataset. For complete set details refer (https://www.tidyverse.org/).
+
+#### **Resources**:
+
+#### https://www.tidyverse.org/packages/
+#### https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/
+
+###**SESSION INFORMATION**
+
+```{r}
+options(width = 100)
+devtools::session_info()
+```
+
