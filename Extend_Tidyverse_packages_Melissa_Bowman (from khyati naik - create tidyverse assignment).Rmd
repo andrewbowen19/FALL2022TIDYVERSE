@@ -1,0 +1,43 @@
+---
+title: "Extend Tidyverse_packages_Melissa_Bowman"
+author: "Melissa Bowman"
+date: "2022-11-09"
+output: html_document
+---
+
+For this section of the TidyVerse project, an creating an extended TidyVerse example on a classmates existing file. Here, I used Khyati Naik’s tidyverse assignment.  The data used here was the House Rent Prediction Data on Kaggle link here:  https://www.kaggle.com/datasets/iamsouravbanerjee/house-rent-prediction-dataset. The TidyVerse package used for the extension was ggplot. 
+
+
+Read libraries
+``````{r load-packages, message=FALSE}
+library(tidyverse)
+```
+
+Reading in the data frames using the **readr** package
+```{r , message=FALSE}
+data_path <- "https://raw.githubusercontent.com/Naik-Khyati/create_tv/main/data/House_Rent_Dataset.csv"
+
+# read data
+house_rent_data <- read_csv(data_path)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+glimpse(house_rent_data)
+str(house_rent_data)
+```
+
+Seeing if there is any relation between rent amount and size of apartment using ggplot. 
+```{r}
+ggplot(house_rent_data, aes(x = Rent, y = Size)) + 
+  geom_point()
+```
+<br>
+The outliers made it difficult to tell if there was any relationship therefore, I split the graph up by city, represented by different colors, and used the geom_smooth(method = lm) which will show regression lines with shaded confidence region.
+
+```{r}
+ggplot(house_rent_data, aes(x = Rent, y = Size, colour= City)) + 
+  geom_point(shape=1) +
+  geom_smooth(method=lm)
+```
