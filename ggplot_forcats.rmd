@@ -131,3 +131,44 @@ nba_elo_notcarmelo <- nba_rating_data |> dplyr::select(contains("elo") & !contai
 head(nba_elo_notcarmelo)
 ```
 
+Tidyverse Extend
+
+```{r}
+library(dplyr)
+```
+
+## How do I subset columns to incorporate contains but also factor in position of the string using Dplyr?
+If you only want to find the statistics that the dataset has before the game was played or for one team
+```{r}
+nba_pre_stats <- nba_rating_data |> dplyr::select(ends_with('pre'))
+head(nba_pre_stats)
+
+nba_ends_one <- nba_rating_data |> dplyr::select(ends_with('1'))
+
+head(nba_ends_one)
+
+nba_starts_one <- nba_rating_data |> dplyr::select(starts_with('elo'))
+
+head(nba_starts_one)
+```
+
+
+## How do I subset columns to incorporate more complex pattern matching using Dplyr?
+If you don't want all of the elo statistics, but a specified subset based on string patterns
+```{r}
+nba_elo_spec <- nba_rating_data |> dplyr::select(matches('.*elo_'))
+head(nba_elo_spec)
+
+nba_elo_one <- nba_rating_data |> dplyr::select(matches('.*elo1.*'))
+head(nba_elo_one)
+```
+
+## How do you subset columns for a specific group of strings in order?
+If there are many fields and not a clear pattern to grab them you can pull specific adjacent columns
+```{r}
+nba_beg_col <- nba_rating_data |> dplyr::select(date:elo2_post)
+head(nba_beg_col)
+```
+
+
+
