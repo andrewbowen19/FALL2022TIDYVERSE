@@ -1,7 +1,7 @@
 Initial Description and Link:
 
 * Demonstrate some basic select, mutate, summarize, and ggplot functions, as well as nest() from the purr package.
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/Create_purr_Ben%20Inbar.rmd
+* https://github.com/beninbar/FALL2022TIDYVERSE/blob/a91f26ce00e783ba62bc779dfef6f539f375116a/Create_purr_Ben%20Inbar.Rmd
 * RPubs: https://rpubs.com/beninbar/create
 
 Revision/Addition Description and Link:
