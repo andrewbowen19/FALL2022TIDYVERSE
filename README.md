@@ -1,12 +1,11 @@
 # FALL2022TIDYVERSE
 DATA 607 Fall 2022 Tidyverse collaboration site
 
-# Sample
+
 Initial Description and Link: 
-* Demonstrates how to flip ggplot axes
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+* Demonstrates how to create an animated plot using gganimate
+*(https://github.com/saniewor/MSDS/blob/main/data607/Assignment%20-%20TidyVerse.Rmd)
 
 
-Revision/Addition Description and Link:
-* Modified ggplot/forcats example to demonstrate sorting, other category
-* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+
+
