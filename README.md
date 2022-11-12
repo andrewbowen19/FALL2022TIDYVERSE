@@ -14,3 +14,4 @@ Revision/Addition Description and Link:
 William Jasmine Inital Submission:
 * Demonstrates how to use purrr map functions to enhance R functional programming
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/Enhancing-Function-With-Purrr.Rmd
+* Extended by Anthony Arroyo to use microbenchmark
