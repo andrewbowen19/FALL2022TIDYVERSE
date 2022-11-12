@@ -6,6 +6,7 @@ Initial Description and Link:
 * Demonstrates how to create an animated plot using gganimate and ggthemes
 *(https://github.com/saniewor/MSDS/blob/main/data607/Assignment%20-%20TidyVerse.Rmd)
 
-
+Updated to use dyplr and ggplot on classmate's package 
+https://github.com/saniewor/MSDS/blob/main/data607/Tidyverse_extend.Rmd
 
 
