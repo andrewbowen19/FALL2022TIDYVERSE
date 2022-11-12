@@ -1,6 +1,6 @@
 ---
 title: "Enhancing Functional Programming in R"
-author: "William Jasmine"
+author: "William Jasmine, Anthony Arroyo"
 date: "2022-10-27"
 output:
   pdf_document: default
@@ -8,8 +8,11 @@ output:
 ---
 
 ```{r, include=FALSE}
-library("RCurl")
-library("tidyverse") 
+library(RCurl)
+library(microbenchmark)
+library(purrr)
+library(magrittr)
+library(dplyr)
 ```
 
 # Introduction 
@@ -21,34 +24,31 @@ This document will attempt to show how to make more efficient certain functional
 The cell below loads the data from Github and transforms it into a R dataframe. 
 
 ```{r}
-csv_data <- getURL("https://projects.fivethirtyeight.com/nba-model/nba_elo_latest.csv")
-df <- data.frame(read.csv(text=csv_data))
-glimpse(df)
+csv_data <- RCurl::getURL("https://projects.fivethirtyeight.com/nba-model/nba_elo_latest.csv")
+dfRaw <- data.frame(read.csv(text=csv_data))
+dplyr::glimpse(dfRaw)
 ```
 
 To limit the scope of the data, the following cell converts `df` to only include predictions for games in which the New York Knicks are playing:
 
 ```{r}
-df <- df %>%
-  filter(team1 == 'NYK' | team2 == 'NYK')
-nrow(df)
+dfSubset <- dfRaw %>%
+  dplyr::filter(team1 == 'NYK' | team2 == 'NYK')
+nrow(dfSubset)
 ```
 
 We see now that the data has been limited to only the 82 regular season games that the Knicks will play. Next, the cell below takes the data cleaning one step further by transforming the dataframe to only include stats pertaining to Knicks (as opposed to their opponents): 
 
 ```{r}
-df <- df %>%
-  transmute(
+df <- dfSubset %>%
+  dplyr::transmute(
     opponent = ifelse(team1=='NYK', team2, team1),
     win_percentage = ifelse(team1=='NYK', elo_prob1, elo_prob2),
     rating_pre = ifelse(team1=='NYK', elo1_pre, elo2_pre),
-    #rating_post = ifelse(team1=='NYK', elo1_post, elo2_post),
-    #points_scored = ifelse(team1=='NYK', score1, score2),
     quality = quality,
     importantance = importance
   )
-
-glimpse(df)
+dplyr::glimpse(df)
 ```
 
 The data in its final format only includes the following columns:
@@ -59,15 +59,15 @@ The data in its final format only includes the following columns:
 4. `quality` - A relative score of how "fun the game will be to watch", scored from 0-100. 
 5. `importance` - A relative score of "how important will this game be in getting either team to the post-season", scored from 0-100.
 
-# Functional Programming 
+# Vectorized Programming 
 
 This section will go through an example of how one might use R functions to answer questions about the data, and how those functions can be enhanced using the Tidyverse `purrr` library. The goal in this case: *how does one quickly calculate the mean of each column*?
 
 ## The old way
 
-The below code chunk shows how we might carry out this task using typical R functions:
+The below code chunk shows how we might carry out this task, if we came from a traditional C background:
 
-```{r, warning=FALSE}
+```{r}
 calc_means <- function(df_input) {
   means <- vector("double", length(df_input))
   for (i in seq_along(df_input)) {
@@ -79,7 +79,9 @@ calc_means <- function(df_input) {
   results
 }
 
-calc_means(df)
+df %>%
+  dplyr::select(-opponent) %>%
+    calc_means(.)
 ```
 
 The code above creates a function `calc_means` that calculates and reports the means of each column using a for loop. The results of this are shown above.
@@ -89,7 +91,7 @@ The code above creates a function `calc_means` that calculates and reports the m
 Using the `purrr` package, running a function over every column in a dataframe becomes incredibly easy via use of the package's `map` functions. There exists a different `map` function for the different R datatypes (i.e. for integers it becomes `map_int`), and each one returns a vector of the datatype specified. In this case, we will use `map_dbl` since calculating means of each column will return a vector of type `double` elements. This is done in the cell below:
 
 ```{r, warning=FALSE}
-map_dbl(df, mean)
+purrr::map_dbl(df, mean)
 ```
 
 
@@ -98,31 +100,23 @@ map_dbl(df, mean)
 As can be seen in the code above, finding and reporting the means of each numerical column only takes one line of code using the `purrr` package. The function we are passing over the columns is the `mean` function, and similar descriptive stats functions (such as `sd` and `median`, can be used in the same way):
 
 ```{r,warning=FALSE}
-map_dbl(df, median)
-map_dbl(df, sd)
+purrr::map_dbl(df, stats::median)
+purrr::map_dbl(df, stats::sd)
 ```
 
 While calling the `calc_means` function we defined earlier now only requires one line since its code has been previously written, instantiating the `map_dbl` function turns out to have a faster runtime:
 
-```{r, results='hide',warning=FALSE,message=FALSE}
-start_time_base <- Sys.time()
-calc_means(df)
-end_time_base <- Sys.time()
-
-start_time_purrr <- Sys.time()
-map_dbl(df, mean)
-end_time_purrr <- Sys.time()
-
-time_base = end_time_base - start_time_base
-time_purrr = end_time_purrr - start_time_purrr
-```
 ```{r}
-time_base - time_purrr
+testDf = dplyr::select(df, -opponent)
+
+microbenchmark::microbenchmark(
+  c_style = calc_means(testDf),
+  purrr = map_dbl(testDf, mean)
+)
 ```
 
-As can be seen in the output above, using the `purrr` map function saved about 0.001 seconds when compared to using the user-defined `calc_means` function. Of course this is an almost an immaterial time save for this example, but that could change should the size of the data or number of function calls increase.
+As can be seen in the output above, using the `purrr` map function saved about four times as much time when compared to using the user-defined `calc_means` function. In the R backend, all functions are vectorized which makes our code more concise, easier to read, less error prone, and alot less redundant.
 
 # Conclusion 
 
 The `purr` library as part of the larger Tidyverse set of packages provides a couple of great tools to help a user with their functional programming capabilities. Though this document focused solely on the `map` suite of functions, be sure to check others in the [documentation](https://purrr.tidyverse.org/) that may suit your use case. 
-
