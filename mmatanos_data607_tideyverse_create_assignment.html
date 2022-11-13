@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Melvin Matanos, Fall 2022" />
+
+<meta name="date" content="2022-10-30" />
+
+<title>DATA 607: Data Acquisition and Management</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">DATA 607: Data Acquisition and
+Management</h1>
+<h4 class="author">Melvin Matanos, Fall 2022</h4>
+<h4 class="date">2022-10-30</h4>
+
+
+
+<div id="the-purrr-package-and-map-function" class="section level1">
+<h1>The purrr package and map() function</h1>
+<p>purrr enhances R’s functional programming (FP) toolkit by providing a
+complete and consistent set of tools for working with functions and
+vectors. If you’ve never heard of FP before, the best place to start is
+the family of map() functions which allow you to replace many for loops
+with code that is both more succinct and easier to read. The best place
+to learn about the map() functions is the iteration chapter in R for
+data science.( <a href="https://purrr.tidyverse.org/" class="uri">https://purrr.tidyverse.org/</a>)</p>
+<p>The map functions transform their input by applying a function to
+each element of a list or atomic vector and returning an object of the
+same length as the input.(<a href="https://purrr.tidyverse.org/reference/map.html" class="uri">https://purrr.tidyverse.org/reference/map.html</a>)</p>
+<p>I will demosntrate the purrr::map() and purrr::pmap() function with
+the use of purrr library for this vignette.</p>
+<p>The data set can be found in (<a href="https://github.com/CSSEGISandData/COVID-19" class="uri">https://github.com/CSSEGISandData/COVID-19</a>). (<a href="https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_daily_reports_us/12-31-2021.csv" class="uri">https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_daily_reports_us/12-31-2021.csv</a>)</p>
+</div>
+<div id="loading-the-required-libraries" class="section level1">
+<h1>Loading the required libraries</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>covid_19_data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports_us/12-31-2021.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## Rows: 58 Columns: 21
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (3): Province_State, Country_Region, ISO3
+## dbl  (10): Lat, Long_, Confirmed, Deaths, FIPS, Incident_Rate, Total_Test_Re...
+## lgl   (6): Recovered, Active, People_Hospitalized, Hospitalization_Rate, Peo...
+## dttm  (1): Last_Update
+## date  (1): Date
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>covid_19_data<span class="sc">$</span>Province_State <span class="ot">&lt;-</span> <span class="fu">replace_na</span>(covid_19_data<span class="sc">$</span>Province_State, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>covid_19_data <span class="ot">&lt;-</span> covid_19_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(Province_State, Country_Region, Lat, Long_, Confirmed, Deaths) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(Confirmed)) </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(covid_19_data)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 6
+##   Province_State Country_Region   Lat  Long_ Confirmed Deaths
+##   &lt;chr&gt;          &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+## 1 California     US              36.1 -120.    5517900  76478
+## 2 Texas          US              31.1  -97.6   4623370  75748
+## 3 Florida        US              27.8  -81.7   4209927  62504
+## 4 New York       US              42.2  -74.9   3480280  59508
+## 5 Illinois       US              40.3  -89.0   2149574  31017
+## 6 Pennsylvania   US              40.6  -77.2   2036424  36705</code></pre>
+</div>
+<div id="purrrmap" class="section level1">
+<h1>purrr:map()</h1>
+<p>This function will allow you to apply a function with a single
+argument to a vector.</p>
+<p>Let’s us first create our function and for instance we will
+determined what is the total percentage of confirmed cases made up each
+location.Then finally we will add a new column of percent total.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>percent_total <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x<span class="sc">/</span><span class="fu">sum</span>(x) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>new_col <span class="ot">&lt;-</span> covid_19_data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(Confirmed) <span class="sc">%&gt;%</span> purrr<span class="sc">::</span><span class="fu">map</span>(percent_total)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(new_col)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>new_col[[<span class="dv">1</span>]][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<pre><code>## [1] 10.049964  8.420722  7.667703  6.338768  3.915102</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>covid_19_data <span class="ot">&lt;-</span> covid_19_data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">&quot;Percent_Total&quot;</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">unlist</span>(new_col),<span class="dv">2</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>covid_19_data</span></code></pre></div>
+<pre><code>## # A tibble: 58 × 7
+##    Province_State Country_Region   Lat  Long_ Confirmed Deaths Percent_Total
+##    &lt;chr&gt;          &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+##  1 California     US              36.1 -120.    5517900  76478         10.0 
+##  2 Texas          US              31.1  -97.6   4623370  75748          8.42
+##  3 Florida        US              27.8  -81.7   4209927  62504          7.67
+##  4 New York       US              42.2  -74.9   3480280  59508          6.34
+##  5 Illinois       US              40.3  -89.0   2149574  31017          3.92
+##  6 Pennsylvania   US              40.6  -77.2   2036424  36705          3.71
+##  7 Ohio           US              40.4  -82.8   2016082  31897          3.67
+##  8 Georgia        US              33.0  -83.6   1839879  31443          3.35
+##  9 Michigan       US              43.3  -84.5   1710325  29020          3.12
+## 10 North Carolina US              35.6  -79.8   1686667  19426          3.07
+## # … with 48 more rows</code></pre>
+</div>
+<div id="purrrpmap" class="section level1">
+<h1>purrr:pmap()</h1>
+<p>This function is a variation of map() that will allow you to apply a
+function with multiple arguments to a vector.</p>
+<p>Let us create a function with a mutliple arguments. For example we
+will create a new column and concatenate the Providence_State column
+with the Country_Region and separate the output with comma.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>comma_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (x <span class="sc">==</span> <span class="st">&quot;&quot;</span>) {</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    column_value <span class="ot">&lt;-</span> y</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    column_value <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_c</span>(x, y, <span class="at">sep =</span> <span class="st">&quot;, &quot;</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(column_value)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>new_argument_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> covid_19_data<span class="sc">$</span>Province_State,  <span class="at">y =</span> covid_19_data<span class="sc">$</span>Country_Region )</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>covid_19_data <span class="ot">&lt;-</span> covid_19_data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="st">&quot;Location&quot;</span> <span class="ot">=</span> <span class="fu">unlist</span>(purrr<span class="sc">::</span><span class="fu">pmap</span>(new_argument_list, comma_function)))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(covid_19_data<span class="sc">$</span>Location, <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;California, US&quot; &quot;Texas, US&quot;      &quot;Florida, US&quot;    &quot;New York, US&quot;  
+## [5] &quot;Illinois, US&quot;</code></pre>
+<p>Display some rows on the final dataframe.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>covid_19_data <span class="ot">&lt;-</span> covid_19_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(Location, Lat, Long_, Confirmed, Percent_Total, Deaths)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(covid_19_data)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 6
+##   Location           Lat  Long_ Confirmed Percent_Total Deaths
+##   &lt;chr&gt;            &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;
+## 1 California, US    36.1 -120.    5517900         10.0   76478
+## 2 Texas, US         31.1  -97.6   4623370          8.42  75748
+## 3 Florida, US       27.8  -81.7   4209927          7.67  62504
+## 4 New York, US      42.2  -74.9   3480280          6.34  59508
+## 5 Illinois, US      40.3  -89.0   2149574          3.92  31017
+## 6 Pennsylvania, US  40.6  -77.2   2036424          3.71  36705</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
