@@ -1,4 +1,22 @@
 
+# FALL2022TIDYVERSE
+DATA 607 Fall 2022 Tidyverse collaboration site
+
+# Sample
+Initial Description and Link: 
+* Demonstrates how to flip ggplot axes
+* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+
+
+Revision/Addition Description and Link:
+* Modified ggplot/forcats example to demonstrate sorting, other category
+* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+
+House Polling Data (@andrewbowen19)
+* [FiveThirtyEight polling dataset](https://projects.fivethirtyeight.com/polls/)
+* [Vignette](https://github.com/andrewbowen19/FALL2022TIDYVERSE/blob/main/vignettes/andrewBowen_Data607_TidyverseCreate.Rmd)
+=======
+
 Initial Description and Link:
 
 * Demonstrate some basic select, mutate, summarize, and ggplot functions, as well as nest() from the purr package.
@@ -59,6 +77,7 @@ Initial Description and Link:
 * Demonstrates using readr to specify column data types and parse atomic vectors
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
+
 
 
 
