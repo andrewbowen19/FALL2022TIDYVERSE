@@ -1,0 +1,88 @@
+---
+title: "Dplyr to Look at Crop Production & Climate Change"
+author: "Sangeetha Sasikumar"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+##Importing Libraries
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(tidyverse)
+library(dplyr)
+```
+
+##Reading in the Data
+In this vignette, I will try to manipulate data in R using Tidyverse's [`dplyr`](https://dplyr.tidyverse.org/) library. After glancing at the data I chose, I debated between ggplot2 and dyplyr, and just stuck with dyplyr. I chose the dataset titled "Crop Production & Climate Change" https://www.kaggle.com/datasets/thedevastator/the-relationship-between-crop-production-and-cli?resource=download
+
+##What is dplyr?
+The dplyr is an R-package to clean, manipulate and summarize data. It allows one to explore data and manipulate it fast. 
+
+```{r}
+data <-read.csv('/Users/Sangeetha/Downloads/crop_production.csv')
+head(data)
+class(data)
+names(data)
+str(data)
+```
+
+##Filter Method
+The filter() method helps one to subset a data frame, while keeping all rows that satisfy the conditions we mention. Here, we are filtering for every row with location "USA" and making a new subset of the original dataframe called "usa". 
+```{r}
+usa<-data %>% 
+  filter(LOCATION == "USA")
+head(usa)
+```
+
+##Select Method
+The select function helps us choose the fields of a dataframe we want to see. 
+```{r}
+head(data %>% 
+  select(LOCATION, INDICATOR, SUBJECT, TIME), n=15)
+
+```
+
+##Mutate method
+The mutate function makes new variables that are functions of existing variables. For example, here we made the new variable "latest_years" and wanted it to equal every year which is greater than 2010. The column displays true if the years are above 2010, if not false. 
+```{r}
+
+head(data %>% 
+  select(LOCATION, INDICATOR, SUBJECT, TIME)%>% 
+  mutate(latest_years =data$TIME>2010), n=25)
+
+```
+
+##Summarize method
+The summarize method reduces multiple values down to a single summary. Here we take the mean of the Value column. 
+```{r}
+data%>%
+  summarize(avg_val=mean(Value))
+
+```
+
+##Arrange method
+The final method in Tidyverse's `dplyr` package is "arrange". Arrange() puts the rows in the order we need them to be in. In the code below, the field "Value" was put in descending order. 
+```{r}
+data %>%
+  group_by(INDICATOR) %>%
+  arrange(desc(Value))
+
+```
+
+Here, the arrange function was applied on the subset 'usa' which was created above and arranged in descending order of the field "Value". 2025, 2024 and 2023 have the top 3 Values. 
+```{r}
+head(usa %>%
+  arrange(desc(Value)), n=10)
+
+```
+
+Thank you for reading this document, I hope you will experiment with dplyr on your own datasets!
+
+
+
