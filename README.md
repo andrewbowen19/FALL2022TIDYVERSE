@@ -132,6 +132,16 @@ Initial Description and Link:
 =======
 
 
+# Daria Dubovskaia extends Sanielle Worrell's assignment on World Energy Consumption
+
+*Added rename(), select(), distinct(), group_by(), arrange(), summarise() functions of dplyr package
+*Data [https://www.kaggle.com/datasets/pralabhpoudel/world-energy-consumption]
+*Original vignette by Sanielle Worrell's [https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/Assignment%20-%20TidyVerse.Rmd]
+*Extended code [https://github.com/ex-pr/DATA607/blob/tidyverse_create/DDubovskaia_Tidyverse_Extend.Rmd]
+
+=======
+
+
 
 
 

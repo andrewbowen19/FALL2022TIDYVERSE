@@ -1,6 +1,6 @@
 ---
 title: "Data 607 - TidyVerse CREATE assignment"
-author: "Sanielle Worrell"
+author: "Sanielle Worrell, extended by Daria Dubovskaia"
 date: "2022-10-29"
 output: html_document
 ---
@@ -70,3 +70,50 @@ Transition over time using gganimate
 ```{r}
 animate(usa_wind + transition_reveal(year), fps = 5, duration = 15, height = 500, width = 675, )
 ```
+
+
+### Extended by Daria Dubovskaia
+
+###  Dplyr package
+Dplyr package is one of the most useful part of the tidyverse library. Dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges. In addition to the above functions, we will consider: rename(), select(), distinct(), mutate(), group_by(), arrange(), summarise(). The dplyr provides the pipe %>% operator, so the result from one step is then “piped” into the next step df %>% f(y).
+
+#### Rename()
+Rename() changes the names of individual variables using new_name = old_name syntax. The data on world energy consists of 122 columns with names that are difficult to understand. Some of the columns we can rename for better understanding.
+
+```{r warning=FALSE, message=FALSE}
+world_energy_rename <- world_energy %>% 
+           rename("primary_wind_consumption_twh" = "wind_consumption",
+           "share_cons_coal_energy" = "coal_share_energy", "low_carbon_elect_cons_percapita"="low_carbon_energy_per_capita", "gross_domestic_product" = "gdp")
+head(world_energy_rename)
+```
+
+#### Select(), Distinct()
+Select function changes whether or not a column is included in case we need only several columns instead of the entire data frame, the first argument is the data frame/tibble, the further arguments are one or more unquoted expressions separated by commas. \
+Distinct function select only unique/distinct rows from a data frame.The first argument is a data frame/tibble, the further arguments are optional variables to use when determining uniqueness.\
+We will select column name with year to see what years are included in the data as well as what countries are mentioned. The data included the observations on 242 different countries over 121 years, from 1900 to 2020.
+
+```{r}
+year <- world_energy_rename %>% select(year)  %>% distinct()
+summary(year)
+head(year)
+
+country <- world_energy_rename %>% select(country)  %>% distinct()
+summary(country)
+head(country)
+```
+
+#### Group_by(), Arrange(), Summarise()
+**Group_by()** takes an existing tbl and converts it into a grouped data frame/tibble where operations are performed "by group". Arguments are a data frame/tibble, variables or computations to group by, .add (FALSE will override existing groups, .add = TRUE will add to the existing groups), .drop (drop groups formed by factor levels that don't appear in the data).\
+**Arrange()** function changes the order of the rows by the values of selected columns. The arguments are .data (data frame/tibble), variables, or functions of variables (use desc() to sort a variable in descending order), .by_group (TRUE will sort first by grouping variable). \
+**Summarise()** collapses a group into a single row, it will have one (or more) rows for each combination of grouping variables. The arguments are .data, name-value pairs of summary functions. The name will be the name of the variable in the result, .groups (grouping structure of the result).\
+We will check the total coal production for over 121 years in the all the countries. First, we group by the iso_code, then we will summarize by the coal_production to find the sum of coal production over 121 in each country, and arrange in desc order. Chine is the first over other countries.
+```{r}
+ world_energy_rename %>% 
+  group_by(country) %>% 
+  summarize(coal_production_total=sum(coal_production,na.rm = TRUE)) %>% 
+  arrange(desc(coal_production_total))
+```
+
+### Conclusion by Daria Dubovskaia
+In the extended part of the assignment, some other functions of the dplyr package were added such as rename(), select(), distinct(), group_by(), arrange(), summarise().
+Tidyverse package is the best tool to transform the data for the further analysis. There are more to discover within each of the libraries mentioned above as well as tidyverse package contains a lot of other libraries that were not mentioned in the current “vignette” such as tidyr, tibble, purrr.
