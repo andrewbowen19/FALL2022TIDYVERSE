@@ -1,6 +1,10 @@
 
 # FALL2022TIDYVERSE
+
+DATA 607 Fall 2022 Tidyverse Collaboration Site
+=======
 DATA 607 Fall 2022 Tidyverse collaboration site- Sangeetha's Dplyr code
+
 
 
 * Basic Dplyr Functions demonstrated on "Crop Production & Climate Change" data 
@@ -8,6 +12,10 @@ DATA 607 Fall 2022 Tidyverse collaboration site- Sangeetha's Dplyr code
 =======
 # Sample
 Initial Description and Link: 
+
+* Demonstrates features of Tidyverse
+* https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/Data_607_TidyVerse_CREATE_Assignment_Vignette.rmd
+=======
 
 * Demonstrates features of tidyverse: dplyr and ggplot2
 * [https://github.com/karmaggyatso/CUNY_SPS/blob/main/Github_data607/tidyverse_assignment/data607_tidyverse.Rmd](https://github.com/karmaggyatso/FALL2022TIDYVERSE/blob/main/data607_tidyverse.Rmd)
