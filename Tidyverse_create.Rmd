@@ -1,0 +1,66 @@
+---
+title: "Untitled"
+output: html_document
+date: "2022-10-30"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r}
+git('https://github.com/acatlin/FALL2022TIDYVERSE.git')
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+#get data
+```{r}
+myData <- read.csv('https://raw.githubusercontent.com/arinolan/Tidyverse-Create/main/nhl_elo.csv')
+
+```
+
+#dply package examples: using glimpse, rename, and select examples. Let's look at the mean home and away team scorres by seasons from 2018-now
+```{r}
+glimpse(myData)
+```
+
+```{r}
+myData <- myData %>% rename(Overtime = 'ot',
+                            Game_Type = 'status')
+
+myData
+```
+
+```{r}
+myData %>% select(home_team, home_team_score, away_team, away_team_score, season, playoff) %>%
+  filter(season >= 2018) %>%
+  group_by(season) %>%
+  summarise(mean_home_score = mean(home_team_score))
+
+myData %>% select(home_team, home_team_score, away_team, away_team_score, season, playoff) %>%
+  filter(season >= 2018) %>%
+  group_by(season) %>%
+  summarise(mean_away_score = mean(away_team_score))
+
+```
+
+#plot chart to see home score for the Anaheim Ducks in the 2022-23 season (just started in oct)
+```{r}
+myData %>% mutate()
+season_Ducks <- myData %>%
+  filter(season >= 2023 & home_team == 'Anaheim Ducks' & date <= '2022-10-30' ) %>%
+  ggplot(aes(date, home_team_score, group = 1)) + 
+  geom_point(na.rm=TRUE, color = 'black') + 
+  geom_line(na.rm=TRUE, color = 'red') + 
+  labs(title = 'Ducks Home Score 2022-23 Season', x = 'Date', y = 'Home Score') + theme_classic() +
+  guides(x = guide_axis(n.dodge = 4))
+
+season_Ducks
+  
+
+```
