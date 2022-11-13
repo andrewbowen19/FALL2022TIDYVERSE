@@ -95,16 +95,15 @@ Based on the initial head summary from the earlier chunk and this additional plo
 
 
 ### Extend: Andrew Bowen
-Extending Josh's `tidyverse` code above. He did a great job of cleaning the ELO dataframe into a very usable format. I'd like to add some additional visualizations of the dataset
+Extending Josh's `tidyverse` code above. He did a great job of cleaning the ELO dataframe into a very usable format. I'd like to add some additional visualizations of the dataset to see if we can see any trends in our data.
 
 
-First up, let's take a look at the diftribution of `season_diff` values:
+First up, let's take a look at the distribution of `season_diff` values:
 ```{r}
 ggplot(sum_stats, aes(x=season_diff)) + geom_histogram(binwidth=20)
 ```
 
-This looks slightly skewed right. I'm a Bulls fan so I'd like to plot a time series of their
-
+This looks slightly skewed right. I'm a Bulls fan so I'd like to plot a time series of their ELO ratings alone. We'll need to distinguish when the Bulls are listed as `team1` or `team2` and take the4 correctpost game elo rating.
 ```{r}
 # isolating the ELO scores for the Bulls, as they are often listed as either team 1 or team 2
 bulls_games <- last_three_seasons_v2 %>% 
@@ -117,7 +116,7 @@ bulls_games %>%
 
 ```
 
-This is good but it's a little busy, let's group by week and get the average the Bull's 
+This is good but it's a little busy, let's group this time series data and get the average ELO rating for the Bulls by week.
 ```{r}
 library(lubridate)
 bulls_by_week <- bulls_games %>% 
@@ -130,8 +129,7 @@ bulls_by_week %>%
         ggplot(aes(x = week, y = avg_post_elo)) + geom_line()
 ```
 
-Interesting to see the jump in average ELO ratings between the 2020 and 2021 seasons. This coincides with when the Bulls made some free agent signings and upgraded their roster. Let's see if we can make a scatter plot of post-game vs pre-game ELO ratings for the Bulls, 
-
+Interesting to see the jump in average ELO ratings between the 2020 and 2021 seasons. This coincides with when the Bulls made some free agent signings and upgraded their roster. Let's see if we can make a scatter plot of post-game vs pre-game ELO ratings for the Bulls, colored by result (Win or Loss)
 ```{r}
 # First we need to add a "results" column via ifelse that shows whether the Bulls won or not
 bulls_games %>%
