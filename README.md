@@ -1,6 +1,17 @@
 
 # FALL2022TIDYVERSE
 
+
+
+Initial Description and Link: 
+* Demonstrates how to create an animated plot using gganimate and ggthemes
+*(https://github.com/saniewor/MSDS/blob/main/data607/Assignment%20-%20TidyVerse.Rmd)
+
+Updated to use dyplr and ggplot on classmate's package 
+https://github.com/saniewor/MSDS/blob/main/data607/Tidyverse_extend.Rmd
+
+
+=======
 DATA 607 Fall 2022 Tidyverse Collaboration Site
 =======
 DATA 607 Fall 2022 Tidyverse collaboration site- Sangeetha's Dplyr code
