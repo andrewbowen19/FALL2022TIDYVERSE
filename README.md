@@ -16,6 +16,13 @@ Revision/Addition Description and Link:
 * Modified ggplot/forcats example to demonstrate sorting, other category
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
 
+
+
+Bridget Boakye
+* Uses dplyr left-join to join two datasets on specified keys
+* Uses ggplot to create map of multiple groups 
+* https://github.com/breboa/FALL2022TIDYVERSE
+=======
 House Polling Data (@andrewbowen19)
 * [FiveThirtyEight polling dataset](https://projects.fivethirtyeight.com/polls/)
 * [Vignette](https://github.com/andrewbowen19/FALL2022TIDYVERSE/blob/main/vignettes/andrewBowen_Data607_TidyverseCreate.Rmd)
@@ -81,7 +88,6 @@ Initial Description and Link:
 * Demonstrates using readr to specify column data types and parse atomic vectors
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
-
 
 
 
