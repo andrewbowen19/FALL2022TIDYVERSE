@@ -2,6 +2,15 @@
 # FALL2022TIDYVERSE
 
 
+# Using readxl package
+Initial Description and Link: 
+* Demonstrates how to load data in from excel spreadsheet using functions from package to limit import
+* https://github.com/JAbinette/FALL2022TIDYVERSE/blob/JAbinette-TidyVerse-readxl/607%20TidyVerse%20CREATE%20Assignment.Rmd
+
+
+
+=======
+
 
 Initial Description and Link: 
 * Demonstrates how to create an animated plot using gganimate and ggthemes
@@ -121,6 +130,7 @@ Initial Description and Link:
 * Demonstrates using readr to specify column data types and parse atomic vectors
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
+
 
 
 
