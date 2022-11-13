@@ -7,6 +7,10 @@ Initial Description and Link:
 * [https://github.com/josh1den/FALL2022TIDYVERSE/blob/main/data607_tidyverse_joshiden.Rmd](https://github.com/josh1den/FALL2022TIDYVERSE/blob/main/data607_tidyverse_joshiden.Rmd)
 
 
+
+Demonstrate TidyVerse package dylpr:
+* [https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd](https://github.com/melbow2424/FALL2022TIDYVERSE/blob/main/Extend_Tidyverse_packages_Melissa_Bowman%20(from%20khyati%20naik%20-%20create%20tidyverse%20assignment)1.Rmd)
+=======
 Revision/Addition Description and Link:
 
 * Modified ggplot/forcats example to demonstrate sorting, other category
@@ -24,4 +28,5 @@ Initial Description and Link:
 * Demonstrates using readr to specify column data types and parse atomic vectors
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
+
 
