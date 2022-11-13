@@ -8,6 +8,10 @@ DATA 607 Fall 2022 Tidyverse collaboration site- Sangeetha's Dplyr code
 =======
 # Sample
 Initial Description and Link: 
+
+* Demonstrates features of tidyverse: dplyr, ggplot2, purrr
+* https://raw.githubusercontent.com/Raji030/data607_tidyverse_create/main/data607_tidyverse_create_assignment.Rmd
+=======
 * Demonstrates how to flip ggplot axes
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
 
@@ -88,6 +92,7 @@ Initial Description and Link:
 * Demonstrates using readr to specify column data types and parse atomic vectors
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
+
 
 
 
