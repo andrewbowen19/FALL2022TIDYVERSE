@@ -91,3 +91,84 @@ religions %>%
         coord_flip()
 ```
 
+# Subsetting data with Dplyr Select
+
+The data set used in this example is from Five Thirty Eight's 22-23 NBA predictions. To see the predictions go to:
+https://projects.fivethirtyeight.com/2023-nba-predictions/
+To download a copy of the data go to:
+https://data.fivethirtyeight.com/#nba-forecasts
+
+```{r}
+nba_rating_data <- read_csv("https://raw.githubusercontent.com/adavidowitz100/FALL2022TIDYVERSE/main/nba-forecasts/nba_elo.csv")
+head(nba_rating_data)
+```
+Any "tidy select" expression can be used to specify your interested subset of columns. Here are some examples:
+
+## How do I subset to only specific columns of the dataframe by name using Dplyr?
+If you only wanted to analyze the specific outcomes of certain games you would not need the full data set.
+```{r}
+nba_games <- nba_rating_data |> dplyr::select(date, season, team1, team2, score1, score2)
+head(nba_games)
+```
+
+## How do I select all of the data except for specified columns by name?
+For this analysis I do not need to keep note of playoff status.
+```{r}
+nba_rating_notplayoff <- nba_rating_data |> dplyr::select(!playoff)
+head(nba_rating_data)
+```
+
+## How do I return all cloumns containing a criteria?
+I want a dataset that only contains column names containing "elo"
+```{r}
+nba_elo <- nba_rating_data |> dplyr::select(contains("elo"))
+head(nba_elo)
+```
+
+## How do I combine multiple subset criteria?
+```{r}
+nba_elo_notcarmelo <- nba_rating_data |> dplyr::select(contains("elo") & !contains("carm"))
+head(nba_elo_notcarmelo)
+```
+
+Tidyverse Extend
+
+```{r}
+library(dplyr)
+```
+
+## How do I subset columns to incorporate contains but also factor in position of the string using Dplyr?
+If you only want to find the statistics that the dataset has before the game was played or for one team
+```{r}
+nba_pre_stats <- nba_rating_data |> dplyr::select(ends_with('pre'))
+head(nba_pre_stats)
+
+nba_ends_one <- nba_rating_data |> dplyr::select(ends_with('1'))
+
+head(nba_ends_one)
+
+nba_starts_one <- nba_rating_data |> dplyr::select(starts_with('elo'))
+
+head(nba_starts_one)
+```
+
+
+## How do I subset columns to incorporate more complex pattern matching using Dplyr?
+If you don't want all of the elo statistics, but a specified subset based on string patterns
+```{r}
+nba_elo_spec <- nba_rating_data |> dplyr::select(matches('.*elo_'))
+head(nba_elo_spec)
+
+nba_elo_one <- nba_rating_data |> dplyr::select(matches('.*elo1.*'))
+head(nba_elo_one)
+```
+
+## How do you subset columns for a specific group of strings in order?
+If there are many fields and not a clear pattern to grab them you can pull specific adjacent columns
+```{r}
+nba_beg_col <- nba_rating_data |> dplyr::select(date:elo2_post)
+head(nba_beg_col)
+```
+
+
+
