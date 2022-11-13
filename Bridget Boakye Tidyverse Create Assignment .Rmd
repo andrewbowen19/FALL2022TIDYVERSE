@@ -1,0 +1,68 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+*Introduction: In this TIDYVERSE CREATE Assignment, I chose the tuition and diversity datasets from Jesse Mostipak on Kaggle, inspired by the analysis conducted there. The two tidyverse capabilities that I demonstrate here are a quick join using dplr's left join capability and ggplot for plotting.*  
+
+#1. Download packages for analysis 
+
+```{r download-packages}
+
+library(tidyverse)
+
+```
+
+#2. Read files into dataframe and check the glimpse of the dataframe 
+
+```{r read-files}
+
+diversity_data <- read_csv("https://raw.githubusercontent.com/breboa/MSDS-Data-607/main/diversity_school.csv", show_col_types = FALSE)
+tuition_data <- read_csv("https://raw.githubusercontent.com/breboa/MSDS-Data-607/main/tuition_cost.csv", show_col_types = FALSE)
+
+glimpse(diversity_data)
+glimpse(tuition_data)
+
+```
+
+
+#3. Inspect structure of data by looking at the head of the two dataframes 
+
+```{r inspect-head}
+
+head(diversity_data)
+head(tuition_data)
+
+```
+
+#4. Using dplyr in the tidyverse package, do a left join on the two dataframes for analysis. The function adds columns from the two dataframes based on the specified keys, in this case, name and state, and as a left join, includes all rows from the first column, in this case, tuition cost. There are some NAs in the room_and_board column that should be investigated but for now, I will ignore those. 
+
+```{r left-join}
+
+combined_df <- tuition_data %>% 
+    left_join(diversity_data, by = c("name", "state")) %>%
+    mutate(per_cat_enrollment = enrollment / total_enrollment)
+
+combined_df
+
+```
+
+#5.Plot per category enrollment against in-state tutition using ggplot 
+
+```{r plot}
+
+options(repr.plot.width=14, repr.plot.height=10)
+
+ggplot(combined_df, aes(x = per_cat_enrollment, y = in_state_tuition)) +
+    geom_point(alpha = 0.5) +
+    geom_smooth(method = "lm") +
+    facet_wrap(~category) +
+    scale_x_continuous(labels = scales::percent) +
+    labs(x = "% group/racial/gender category representation",
+         y = "In State Tuition",
+         title = "Relationship between group/racial/gender category and in state tuition") +
+    theme_minimal() +
+    theme(text = element_text(size=10))
+```
+
+*Conclusion: The plot shows that in-state tution increases as the proportion of certain categories (Non-Resident Foreign,  Asian students, Two or More Races) increase. However, as the proportion of American Indians, Black, Hispanic, Total Minority, increases,  the in state tuition decreases. These findings are interesting and worth investigating further.*

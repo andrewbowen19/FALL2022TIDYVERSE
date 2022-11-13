@@ -1,0 +1,80 @@
+---
+title: "Tidyverse: Using filter & other functions in Dplyr"
+author: "Christian Uriostegui"
+date: "2022-10-31"
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(knitr)
+```
+
+# Filtering data in Dplyr
+
+## 2022 Electoral candidates and their stance on the 2020 presidential election
+
+I found a dataset on this fall's electoral candidates and their beliefs on the legitimacy of the 2020 presidential elections: https://projects.fivethirtyeight.com/republicans-trump-election-fraud/
+
+I thought it would be a great dataset to test the filter function on. Using this, I want to get greater insight into the belief of candidates on the ballot in New York. 
+
+```{r}
+voter = read.csv("https://raw.githubusercontent.com/curiostegui/CUNY-SPS/main/Data%20607/Assignment%20-%20Tidyverse%20CREATE/fivethirtyeight_election_deniers.csv",header = TRUE, sep = ",") %>%
+  select(1:6)
+```
+
+In this dataset we can observe information such as the candidate, incumbent status, and stance on the 2020 presidential election.
+
+```{r}
+as_tibble(voter)
+```
+
+
+## Count
+
+Using the count function, we can see the Stances of the candidates. I will also explore whether Incumbent status affects whether a candidate has been vocal about their Stance on the 2022 presidential election.
+
+```{r}
+voter %>% count(Stance)
+```
+
+```{r}
+voter["Vocal_or_Silent"] <- ifelse(voter$Stance == 'Avoided answering' | voter$Stance == 'No comment', "Silent", "Vocal")
+```
+
+## Group by & Mutate
+
+The group by function allows me to arrange my dataset by variables of interest. In this case I looking to Incumbent status, whether they were vocal or silent and then looking at the count.
+
+```{r}
+voter2 <- voter %>% 
+  group_by(Incumbent,Vocal_or_Silent) %>%
+  count(Vocal_or_Silent) 
+```
+
+```{r}
+voter2$n <- as.numeric(voter2$n)
+```
+
+I use the mutate function to add a percentages column, which is useful to see the make up of those that were vocal vs those who weren't. We can see that a majority of candidates that are Incumbents were vocal about their opinions on the 2020 election (about 96%).
+
+```{r}
+voter2 %>%
+  group_by(Incumbent) %>%
+  mutate(perc = n / sum(n))
+```
+
+## Filter
+
+Using the filer function, I filter for candidates in New York. We can see the majority spoke their opinion on the 2020 elections.
+
+```{r}
+voter %>%
+  filter(State == 'New York') %>%
+  group_by(Vocal_or_Silent) %>%
+  count(Vocal_or_Silent)
+```
+  
+
+
+
