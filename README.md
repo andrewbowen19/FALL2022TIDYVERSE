@@ -9,3 +9,14 @@ Initial Description and Link:
 
 Revision/Addition Description and Link:
 
+* Modified ggplot/forcats example to demonstrate sorting, other category
+* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+
+
+# Jawaid Hakim
+Initial Description and Link: 
+* Demonstrates using readr to specify column data types and parse atomic vectors
+* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
+=======
+
+
