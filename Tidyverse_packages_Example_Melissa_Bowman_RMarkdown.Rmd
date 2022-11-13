@@ -1,0 +1,68 @@
+---
+title: "Tidyverse"
+author: "Melissa Bowman"
+date: "2022-10-28"
+output: html_document
+---
+
+For the project TidyVerse, an example was created using mostly the dplyr package and the data from a FiveThirtyEight article titled *2022 Is Not Another ‘Year Of The Woman’*  (https://fivethirtyeight.com/features/2022-women-candidates-data/) and its data was located here: https://github.com/fivethirtyeight/data/tree/master/primary-project-2022
+
+Load libraries.
+```{r libraries}
+library(tidyverse)
+```
+
+
+Reading in the data frames using the **readr** package
+```{r pressure, read_csv}
+url_republican <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/primary-project-2022/rep_candidates.csv"
+url_democratic <-"https://raw.githubusercontent.com/fivethirtyeight/data/master/primary-project-2022/dem_candidates.csv"
+
+
+df_rep <- read.csv(url_republican)
+df_dem <- read.csv(url_democratic) 
+```
+
+### Using the dplyr package for the following: <br>
+
+Creating new columns 
+```{r}
+df_dem <- df_dem %>%
+  mutate(political_party = "Democrat")
+
+df_rep <- df_rep %>%
+  mutate(political_party = "Republican")
+```
+
+Counting unique variable in each column 
+```{r}
+df_dem %>%
+  filter("Gender" != "") %>%
+  count(Gender, name  = "Count")
+
+df_rep %>%
+  filter("Gender" != "") %>%
+  count(Gender, name  = "Count")
+```
+
+Combining data frame into one 
+```{r}
+df_bind <- bind_rows(df_rep, df_dem)
+```
+
+Creating a subset of specific columns into a new data frame
+```{r}
+df_subset_bind <- df_bind %>%
+  select(Candidate, 
+         Gender, 
+         Race.1, 
+         Race.2, 
+         Race.3, 
+         Incumbent, 
+         State, 
+         Office, 
+         District, 
+         political_party)
+```
+
+

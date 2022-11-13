@@ -1,0 +1,61 @@
+---
+title: "DATA607_Tidyverse_Project"
+author: "Josh Iden"
+date: "2022-10-26"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# TIDYVERSE PROJECT
+
+This project uses data from [fivethirtyeight.com](https://projects.fivethirtyeight.com/republicans-trump-election-fraud/) to demonstrate tidyverse package capabilities.
+
+```{r load-packages}
+library(tidyverse)
+```
+
+## THE DATA
+
+```{r}
+url <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/election-deniers/fivethirtyeight_election_deniers.csv"
+df <- read.csv(url) 
+head(df)
+```
+
+The *dplyr* package allows us to use pipes to transform the data:
+
+```{r}
+df <- df |>
+  mutate(Stance = toupper(Stance))
+```
+
+It also let's us count the number of times a value occurs:
+
+```{r}
+stance_ct <- df |>
+      count(Stance) |>
+      arrange(desc(n))
+
+stance_ct
+```
+The *ggplot* package allows us to visualize this without the transformation. 
+
+```{r warning=FALSE}
+ggplot(df) +
+  geom_histogram(aes(x=Stance), stat="count") +
+  coord_flip()
+```
+The *tidyr* package lets us pivot data:
+
+```{r}
+by_state <- df |> # using dplyr pipe
+  group_by(State, Stance) |>
+  summarise(count = n()) |>
+  pivot_wider(names_from = Stance, values_from = count)
+
+by_state
+```
+
