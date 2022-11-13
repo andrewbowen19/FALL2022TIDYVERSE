@@ -34,6 +34,11 @@ Revision/Addition Description and Link:
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
 
 
+Dplyr Vignette - Using Filter & Other Functions
+* Demonstrates how to use filter, select function from Dplyr
+* https://github.com/curiostegui/CUNY-SPS/blob/main/Data%20607/Assignment%20-%20Tidyverse%20CREATE/DATA607_Assignment_Tidyverse_Create.Rmd
+=======
+
 
 Bridget Boakye
 * Uses dplyr left-join to join two datasets on specified keys
@@ -105,6 +110,7 @@ Initial Description and Link:
 * Demonstrates using readr to specify column data types and parse atomic vectors
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
+
 
 
 
