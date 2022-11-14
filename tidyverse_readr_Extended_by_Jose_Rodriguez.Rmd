@@ -71,7 +71,7 @@ Q: how can I parse a character vector into specific data type
 A: Use readr::parse_ functions
 
 ```{r}
-çparse_double(c('1.1', '2', '3', '4'))
+parse_double(c('1.1', '2', '3', '4'))
 parse_logical(c('t', 'f'))
 ```
 
@@ -95,4 +95,20 @@ The Date/Time  parsers takes an optional *format* argument that specifies the st
 parse_date("10/29/2022", format = "%m/%d/%Y")
 
 ```
+
+# Extension
+
+In addition to the above-mentioned functions from readr, col_skip() can be a very powerful tool to subset your data before its loaded into the environment. This function can be used to increase computing efficiency and reduce computing power costs if used at a large scale. In the example below we will remove *eggs_laid*.
+```{r}
+#Skipping a column
+chickens1 <- read_csv(readr_example("chickens.csv"), col_types = cols('eggs_laid'=col_skip()))
+chickens1
+```
+
+Another useful function in terms of scalability is read_delim_chunked(). This function allows its user to read a file in pieces and process it bit by bit. Very useful if ones system does not have enough ram memory space to allocate the whole file.
+```{r}
+f <- function(x, pos)
+read_delim_chunked(readr_example("chickens.csv"),  DataFrameCallback$new(f), chunk_size = 5)
+```
+
 
