@@ -48,6 +48,17 @@ ggplot(df) +
   geom_histogram(aes(x=Stance), stat="count") +
   coord_flip()
 ```
+
+We can also combine dplyr operations and then plot in the same pipe verb chain:
+```{r}
+df |>
+  mutate(Stance = tolower(Stance)) |>
+  ggplot() +
+  geom_histogram(aes(x=Stance), stat="count") +
+  coord_flip()
+```
+
+
 The *tidyr* package lets us pivot data:
 
 ```{r}
