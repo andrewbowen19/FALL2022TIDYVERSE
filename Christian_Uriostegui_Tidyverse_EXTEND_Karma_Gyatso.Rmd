@@ -1,0 +1,176 @@
+---
+title: "Vignette Title"
+author: "Karma Gyatso, extended by Christian Uriostegui"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+
+## Loading data from github, which was downloaded from Kaggle. classifying the dataset type and printing all the names of the variables. 
+```{r}
+patient_records_test <- read.csv("https://raw.githubusercontent.com/karmaggyatso/CUNY_SPS/main/Github_data607/tidyverse_assignment/Train-1617360447408-1660719685476.csv")
+
+```
+
+```{r}
+class(patient_records_test)
+```
+
+```{r}
+names(patient_records_test)
+
+```
+
+
+## Research question 
+**What is the main factor of patient readmission in the hospital? Are the treatment and age group the reason for readmission? What are the chances of readmission based on medical treatment and age group?**
+
+
+
+## Cases 
+
+**Each case represents individual patient who went to hospital for treatment. There are *66,587* observations**
+
+```{r}
+dim(patient_records_test)
+```
+
+## Resources
+**Data source cited in MLA 9th edition**
+ + Vutukuri, Girish. “Hospital_Administration.” Hospital_Administration | Kaggle, www.kaggle.com/datasets/girishvutukuri/hospital-administration/code?resource=download. Accessed 30 Oct. 2022.
+ 
+ 
+## Analysis
+
+**Data cleaning**
+There is a data with medical_treatment as "?". Since we are not sure what sort of medical_treatement it is, we are omitting the records in the new variable. We're grouping the type of medical_treatement and counting how many patient has readmitted. 
+```{r}
+hospital_readmission_by_treatment <- patient_records_test %>% 
+  filter(readmitted == 1) %>%
+  filter(medical_specialty != "?") %>%
+  group_by(medical_specialty) %>%
+  count() %>% 
+  arrange(desc(n))
+
+
+hospital_readmission_by_treatment
+
+```
+
+A graphical representation of above code. 
+```{r}
+ggplot(hospital_readmission_by_treatment, aes(x = medical_specialty, y = n)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2)) +
+  coord_flip() 
+```
+
+We also have to consider the age as an factor. So, I am grouping the age and counting total readmission. 
+```{r}
+
+hospital_readmission_by_age <- patient_records_test %>% 
+  filter(readmitted == 1) %>%
+  group_by(age) %>%
+  count() %>% 
+  arrange(desc(n))
+
+hospital_readmission_by_age
+```
+
+A graphical representation of above code. 
+```{r}
+ggplot(hospital_readmission_by_age, aes(x = age, y = n)) +
+  geom_bar(stat = "identity") + 
+  labs(title= "Hospital readmission by age",
+       x="age_group",y="total count")+
+  coord_flip()
+  
+```
+
+## Conclusion:
+Those patients who had visited hospital for **internalMedicine** as a medical_treatment are most readmitted. Also the age group between 80-90 are also readmitted to the hospital. Further analysis can be done on age with most medical_treatment applied. 
+
+I have used the tidyverse,dplyr fucntions such as piping fuction, filter and group_by function. 
+
+## Christian Uriostegui EXTEND
+
+**Adding colour & luminance to Karma's Charts**
+
+In both charts which imagine readmission by treatment and age, I use the colour, and scale_fill_hue to increase visibility of the bars.
+
+```{r}
+ggplot(hospital_readmission_by_treatment, aes(x = medical_specialty, y = n)) +
+  geom_bar(stat = "identity",colour='blue') +
+  scale_fill_hue(l=40) +
+  theme(text = element_text(size = 6),element_line(size = 2)) +
+  coord_flip() 
+```
+
+```{r}
+ggplot(hospital_readmission_by_age, aes(x = age, y = n)) +
+  geom_bar(stat = "identity",colour='blue') +
+  scale_fill_hue(l=40) +
+  labs(title= "Hospital readmission by age",
+       x="age_group",y="total count")+
+  coord_flip()
+```
+**Additional Analysis**
+
+I continued Karma's objective in looking at factors of patient readmission. This time however, I examined what role medication use has in their visit to the hospital. I hypothesize that the more medication a patient takes, the more likely they are to be readmitted.
+
+**Data Cleaning**
+
+I created to seperate datasets, one that included patients that were readmitted and another where they weren't readmitted. My goal is to count the medication, organize them by age group, join them and created a barchart
+
+```{r}
+hospital_readmitted <- patient_records_test %>%
+  filter(readmitted == 1) 
+
+hospital_non_readmitted <- patient_records_test %>%
+  filter(readmitted == 0) 
+```
+
+```{r}
+Totals <- aggregate(hospital_readmitted_count$num_medications, list(hospital_readmitted_count$age), FUN=sum)
+
+Totals <- Totals %>%
+  mutate(readmitted = "1")
+```
+
+```{r}
+Totals2 <- aggregate(hospital_non_readmitted$num_medications, list(hospital_non_readmitted$age), FUN=sum)
+
+Totals2 <- Totals2 %>%
+  mutate(readmitted = "0")
+```
+
+```{r}
+Combined <- rbind(Totals,Totals2)
+```
+
+**Final**
+
+```{r}
+ggplot(Combined, aes(x=Group.1,y=x, fill=readmitted)) + geom_bar(stat="identity")
+```
+
+## Conclusion
+I was surprised to see the opposite of what I hypothesized. We can see that a majority of patients that are not readmitted take large amounts of medication.
