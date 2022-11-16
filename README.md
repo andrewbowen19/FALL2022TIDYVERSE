@@ -98,7 +98,9 @@ Initial Description and Link:
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
 
-
+## Karma Gyatso
+* Demonstrates use of deplyr::select, ggplot2::facet_wrap and ggplot2::graphs
+* https://github.com/karmaggyatso/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
 
 
 
