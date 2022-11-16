@@ -58,3 +58,93 @@ df %>% split(.$type) %>% # from base R
 ```
 
 
+## Extended Version Karma Gyatso
+
+### Alcohol Level
+Comparison between white and red wines interm of alcohol. White wines are largely produced between 9% and 10% alcohol
+
+```{r}
+summary(df$alcohol)
+```
+
+```{r}
+ggplot(df, aes(x = alcohol, fill = type)) + 
+  geom_bar(width = 0.5) + 
+  facet_wrap(~type) +
+  scale_x_continuous(breaks = seq(8,15,1), lim = c(8,15)) 
+```
+
+
+### Quality Level
+The most common quality of wine produced is grade 6 type quality. May be its the average price and most sellable product. 
+
+```{r}
+ggplot(df, aes(x = quality, fill = type)) + 
+  geom_bar() + 
+  scale_x_continuous(breaks = seq(2,10,1), lim = c(2,10)) + 
+  labs(
+    title = "Wine Quality (0 - worst, 10 - best)"
+  )
+```
+
+
+###Chloride level
+
+Chloride distribution is left skewed. The mean is 0.05
+```{r}
+summary(df$chlorides)
+```
+
+```{r}
+chloride_amount <- df |>
+  select(type, chlorides)
+
+chloride_amount
+
+ggplot(chloride_amount, aes(x = chlorides, fill = type)) + 
+  geom_bar() + 
+  facet_wrap(~type) +
+  labs(
+    title = "Chloride amount in a wine"
+  )
+```
+### Chloride vs Quality
+
+Here we are checking what amount of chloride is used in quality rated wine. In average rating wine, which are between 4 - 6 has highest amount of chloride level for both white and red wines. Whereas in the high rated quality wine has less amount of chloride. 
+
+```{r}
+quality_vs_chlorides <- df |> 
+  select(type, chlorides, quality)
+
+max(quality_vs_chlorides$quality)
+
+ggplot(quality_vs_chlorides, aes(x = chlorides, y = quality)) + 
+  geom_point(aes(color = factor(type))) + 
+  scale_x_continuous(breaks = seq(0.0,0.5,0.05), lim = c(0.0,0.5)) + 
+  labs(
+    title = "Chloride amount in a wine"
+  )
+```
+
+### Density vs Quality
+
+Here we are checking the density vs the quality of the wine. It seems that the most average wine, between 4 - 6, ratings are denser. However, we can also see that high quality wines are also denser but very few in quantity. 
+```{r}
+density_vs_quality <- df |> 
+  select(type, quality, density)
+
+max(density_vs_quality$density)
+
+ggplot(density_vs_quality, aes(x = density, y = quality)) + 
+  geom_point(aes(color = factor(type))) + 
+  facet_wrap(~type) +
+    scale_x_continuous(breaks = seq(0.99,1.01,0.01), lim = c(0.99,1.01)) + 
+  labs(
+    title = "Density amount vs quality in a wine"
+  )
+
+```
+
+
+
+
