@@ -54,9 +54,16 @@ Revision/Addition Description and Link:
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
 
 
-Dplyr Vignette - Using Filter & Other Functions
+Christian Uriostegui
+CREATE
+* Dplyr Vignette - Using Filter & Other Functions
 * Demonstrates how to use filter, select function from Dplyr
 * https://github.com/curiostegui/CUNY-SPS/blob/main/Data%20607/Assignment%20-%20Tidyverse%20CREATE/DATA607_Assignment_Tidyverse_Create.Rmd
+
+EXTEND
+* Utilized colour and scale_fill_hue to add color to Karma Gyatso's visualizations
+* Also included additional analysis
+* https://github.com/curiostegui/FALL2022TIDYVERSE/blob/main/Christian_Uriostegui_Tidyverse_EXTEND_Karma_Gyatso.Rmd
 =======
 
 
