@@ -131,6 +131,12 @@ Initial Description and Link:
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
 
+# Jose Rodriguez
+Initial Description and Link: 
+* Demonstrates using readr to specify column data types and parse atomic vectors.
+* Extended to demonstrate the use of excluding columns with col_skip() and reading large files by chunking with read_delim_chunked()
+* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
+=======
 
 
 
