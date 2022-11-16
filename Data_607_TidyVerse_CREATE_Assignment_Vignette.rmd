@@ -161,4 +161,32 @@ percent_worst_drivers %>%
 options(width = 100)
 devtools::session_info()
 ```
+#**SANGEETHA'S EXTENSION USING DPLYR**
+####I am using the filter method to filter for which states have a percentage of drivers who are not distracted which is less than 50, therefore it means they are distracted. 
+```{r}
+colnames(worst_drivers)
 
+worst_drivers%>%
+  filter(PERC_DRIVERS_NOT_DIST<50)
+```
+####The states of Mississippi and Wisconsin have low no distracted driver percentages. 
+####Next, I am using the summarize method to find the national mean of alcohol drivers' percentage. 
+
+```{r}
+worst_drivers%>%
+  summarize(avg_val=mean(PERC_DRIVERS_ALCHO))
+```
+####Now, I am using the arrange method to put the rows in the order of my choosing.
+```{r}
+head(worst_drivers %>%
+  arrange(desc(PERC_DRIVERS_ALCHO)), n=10)
+
+head(worst_drivers %>%
+  arrange((PERC_DRIVERS_ALCHO)), n=10)
+```
+####And finally, I apply the select method to find the states with driver's who's alcohol percentage is less than 20. (It's only Utah!)
+```{r}
+worst_drivers %>%
+       select(STATE, PERC_DRIVERS_SPEED)%>%  
+        mutate(cleanest_drivers=worst_drivers$PERC_DRIVERS_ALCHO<20)
+```
