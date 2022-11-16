@@ -1,0 +1,65 @@
+---
+title: "tidyverse_wilson"
+author: "Wilson Ng"
+date: "2022-10-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+```
+
+## importing data
+
+```{r}
+data <- read.csv("https://raw.githubusercontent.com/wilsonvetdev/FALL2022TIDYVERSE/main/archive/allDogDescriptions.csv")
+
+head(data)
+```
+
+## cleaning the columns with transmute, filtering for adoptable dogs that are also good with other dogs, and finding the count per breed.
+
+```{r deleting-columns}
+data <- data %>% transmute(
+  id,
+  org_id,
+  url,
+  species,
+  breed_primary,
+  breed_secondary,
+  breed_mixed,
+  breed_unknown,
+  color_primary,
+  color_secondary,
+  color_tertiary,
+  age,
+  sex,
+  size,
+  coat,
+  fixed,
+  house_trained,
+  declawed,
+  special_needs,
+  shots_current,
+  good_w_children = env_children,
+  good_w_dogs = env_dogs,
+  good_w_cats = env_cats,
+  name,
+  status, 
+  posted,
+  contact_city,
+  contact_state,
+  contact_zip,
+  contact_country,
+  description
+) %>% 
+  filter(status == "adoptable" & good_w_dogs == "True")
+
+data %>% 
+  group_by("breed_primary") %>%
+  count("breed_primary") %>%
+  arrange(desc(freq))
+```
+
