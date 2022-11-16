@@ -1,0 +1,80 @@
+---
+title: "TidyVerse EXTEND Assignment"
+author: "Sanielle Worrell"
+date: "2022-11-12"
+output: html_document
+---
+
+Assignment: Your task here is to Extend an Existing Example. Using one of your classmate's examples (as created above), extend his or her example with additional annotated code.
+
+Analysis Performed: Classmate example used was Mahmud Hasan Al Raji's tidyverse assignment on wine types. I extended my classmate code on GGPLOT by showing how to calculate the average alcohol by wine type and plot this using ggplot.
+
+Conclusion: White white has a higher percentage of alcohol compared to red wine.
+
+## 
+
+## 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# CLASSMATES PORTION
+
+```{r }
+library(tidyverse)
+library(tidyr)
+```
+
+```{r }
+df<-read.csv("https://raw.githubusercontent.com/Raji030/data607_tidyverse_create_assignment/main/winequalityN.csv")
+glimpse(df)
+```
+
+The dplyr package in tidyverse can be used to subset a data frame by subsetting rows using specific column value:
+
+```{r }
+read_wine_data<-df %>% filter(type=="red")
+glimpse(read_wine_data)
+```
+
+The dplyr package in tidyverse package can also be used to count the number of times a column value occurs:
+
+```{r use_count_function}
+count_wine_type<-df %>% count(type)
+```
+
+The ggplot2 package in tidyverse can be used to visualize relationship between variables of interest
+
+```{r }
+# Creating horizontal plot to visualize the count by wine types
+ggplot(data=count_wine_type, aes(x=type, y=n)) +
+  geom_bar(stat="identity") + 
+    labs(
+      x = "Wine Type",
+      y = "Count",
+      title = "The count of wine types"
+    ) + 
+    coord_flip()
+```
+
+# TIDYVERSE EXTEND PORTION
+
+```{r}
+## Calculating average alcohol of red vs white wine using dyplr:
+ count_wine_type <- df %>%
+  group_by(type)%>%
+  summarise(count=n(), avg_alch = mean(alcohol))
+ count_wine_type
+ 
+```
+
+```{r}
+## Creating a ggplot to show the average alcohol by wine type
+ggplot(count_wine_type, aes(x = avg_alch, y = count, fill = type)) + 
+  geom_bar(stat = "identity")+scale_fill_manual(values=c("red", "pink"))+
+  labs(title = "Average alcohol by wine type", x = "Avg Alcohol", y = "Count of wine type")+
+  theme_bw()
+```
+
+\`\`\`
