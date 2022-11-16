@@ -155,6 +155,15 @@ Initial Description and Link:
 =======
 
 
+# Daria Dubovskaia extends Sanielle Worrell's assignment on World Energy Consumption
+
+*Added rename(), select(), distinct(), group_by(), arrange(), summarise() functions of dplyr package
+*Data [https://www.kaggle.com/datasets/pralabhpoudel/world-energy-consumption]
+*Original vignette by Sanielle Worrell's [https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/Assignment%20-%20TidyVerse.Rmd]
+*Extended code [https://github.com/ex-pr/DATA607/blob/tidyverse_create/DDubovskaia_Tidyverse_Extend.Rmd]
+
+=======
+=======
 ## Karma Gyatso
 * Demonstrates use of deplyr::select, ggplot2::facet_wrap and ggplot2::graphs
 * https://github.com/karmaggyatso/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
@@ -171,6 +180,7 @@ Initial Description and Link:
 * Demonstrates features of tidyverse: qplot to Single Variables and Distribution of Two and More Variables.
 * https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
 * Extended by Enid Roman
+
 
 
 
