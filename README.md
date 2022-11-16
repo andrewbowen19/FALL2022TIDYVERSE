@@ -106,7 +106,9 @@ Initial Description and Link:
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
 
-* Mahmud Hasan Al Raji
+
+
+Mahmud Hasan Al Raji Initial Submission:
 * Demonstrates features of tidyverse: qplot to Single Variables and Distribution of Two and More Variables.
 * https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
 * Extended by Enid Roman
