@@ -148,5 +148,10 @@ Initial Description and Link:
 
 
 
+# Mahmud Hasan Al Raji Initial Submission:
+* Demonstrates features of tidyverse: qplot to Single Variables and Distribution of Two and More Variables.
+* https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
+* Extended by Enid Roman
+
 
 
