@@ -51,11 +51,11 @@ Initial Description and Link:
 =======
 * Demonstrates how to perform data manipulation with dplyr package
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/607_create_tv.rmd
->>>>>>> 5e216249dfe9079bc1a7a8c1ba79c9e447b78af8
+
 
 I am using housing rent dataset from kaggle which has followign variables:
 
-<<<<<<< HEAD
+
 Revision/Addition Description and Link:
 * Modified ggplot/forcats example to demonstrate sorting, other category
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
