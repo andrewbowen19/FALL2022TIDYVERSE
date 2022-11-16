@@ -91,6 +91,19 @@ sum_stats %>%
 
 Based on the initial head summary from the earlier chunk and this additional plot it is much more apparent that teams with lower initial expectations are typically the one with the biggest variability with in-season Elo ratings. This makes a bit of sense given that the model was somewhat bearish on these teams and they outperformed expectations during the season that were not initially accounted at their lowest point. There is a clear linear trend in the data overall and in general teams are improving their ratings over the full season.
 
+*Filter* is the same function as the subset function, and is used to filter data by specific conditions. Below is an example of extracting only New York from the data.
 
+```{r}
+df %>% filter(State == "New York") 
+```
 
+*Arrange* is a function that sorts data according to a specific order. Unlike the order function, which only tells the sort order, it shows sorted data.
 
+```{r}
+df %>% arrange(Candidate)
+```
+
+*select* is a function that selects specific variables from data and provides useful functions that are not in basic R.
+```{r}
+df %>% select(Candidate, Incumbent, State)
+```
