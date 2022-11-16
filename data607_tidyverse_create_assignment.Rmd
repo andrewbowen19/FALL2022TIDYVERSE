@@ -57,6 +57,63 @@ df %>% split(.$type) %>% # from base R
   map(summary)
 ```
 
+### **Tidyverse Extended by Enid Roman**
+
+### **Distribution of Single Variables**
+
+### Wine Quality
+
+#### Red wine sample is smaller. We know that number of observations for red and white are different in the dataset, but still we can see that for both colors it’s normal distribution with almost the same picks at 5 and 6 quality point.
+
+```{r}
+table(df$quality)
+```
+
+#### Here we use the function qplot() in ggplot2 part of Tidyverse Package is very similar to the basic plot() function from the R base package. It can be used to create and combine easily different types of plots.
+
+```{r}
+library(ggplot2)
+qplot(quality, data = df, fill = type, binwidth = 1) +
+  scale_x_continuous(breaks = seq(3,10,1), lim = c(3,10)) 
+```
+### Level of alcohol
+
+#### Alcohol level distribution looks skewed. Again, red wine sample is smaller but it gives the same pattern of alcohol level distribution as white wines. Most frequently wines have 9.5%, mean is 10.49% of alcohol.
+
+```{r}
+summary(df$alcohol)
+```
+
+
+```{r}
+qplot(alcohol, data = df, fill = type, binwidth = 0.5) +
+    scale_x_continuous(breaks = seq(8,15,0.5), lim = c(8,15))
+```
+### Wine Density
+
+#### Looking at ‘table’ summary we see that there are two outliers: 1.0103 and 1.03898. To see the distribution of density clearer I used log10 and limited the data. Now we can see that density distribution of white wine is bimodal and of red wine is normal.
+
+```{r}
+summary(df$density)
+```
+
+```{r}
+qplot(density, data = df, fill = type, binwidth = 0.0002) +
+    scale_x_log10(lim = c(min(df$density), 1.00370), 
+                  breaks = seq(min(df$density), 1.00370, 0.002))
+```
+
+### **Distribution of Two and More Variables**
+
+### Density of Quality by color
+
+#### In out sample we have almost the same amount of red and white wines with quality ‘3’, ‘4’ and ‘9’, more red wines with quality ‘5’ and more white wines with quality “6”, “7” and “8”.
+
+```{r}
+qplot(quality, data = df, binwidth = 1, color = type, geom = "density") + 
+    scale_x_continuous(breaks = seq(3, 9, 1))
+```
+
 
 ## Extended Version Karma Gyatso
 

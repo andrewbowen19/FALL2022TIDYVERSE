@@ -1,0 +1,420 @@
+
+---
+title: "TIDYVERSE VIGNETTE"
+author: "Keeno Glanville"
+date: "2022-11-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+# Tidyverse Vignette
+
+## Load kaggle set Data
+Github:https://raw.githubusercontent.com/kglan/FALL2022TIDYVERSE/main/UCI_Credit_Card.csv
+kaggle: https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset
+
+## Information on the Dataset
+
+* SEX: Gender (1=male, 2=female)
+* EDUCATION: (1=graduate school, 2=university, 3=high school, 4=others, 5=unknown, 6=unknown)
+* MARRIAGE: Marital status (1=married, 2=single, 3=others)
+* AGE: Age in years
+```{r}
+ccd <- read.csv("https://raw.githubusercontent.com/kglan/FALL2022TIDYVERSE/main/UCI_Credit_Card.csv")
+names(ccd)
+```
+
+
+## Research question 
+
+**What are the strongest contributing factors(nominal) towards client defaulting on their payments? Are there any trends?**
+
+
+
+## Cases 
+ 
+**Each case represents individuals with credit card debt and their current status with defaulting on their payment. There are *30,000* observations**
+
+```{r}
+dim(ccd)
+head(ccd)
+ccd_n <- ccd%>%
+  select(1,3,4,5,6,25)
+head(ccd_n)
+ccd1<- ccd_n%>%
+  filter(default.payment.next.month == 1)
+ccd0<- ccd_n%>%
+  filter(default.payment.next.month == 1)
+```
+
+
+## Analysis
+
+** How can we better understand this dataset and its correlations with nominal features?
+
+```{r}
+pairs(data = ccd, ~ ID + SEX + EDUCATION+ MARRIAGE + AGE+ default.payment.next.month)
+```
+
+
+## We now want to see how the Data correlates with default in the next month payment
+```{r}
+
+ggplot(ccd_n, aes(x = AGE, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = SEX, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = EDUCATION, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = MARRIAGE, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+
+ggplot(ccd_n, aes(x = AGE))+
+  geom_histogram()
+ggplot(ccd_n, aes(x = EDUCATION))+
+  geom_histogram()
+
+
+
+```
+
+## We Notice these factors have high instances of bankruptcy:
+* age ranges between 20-30 are more likely to default on their 
+next payment.
+* Individuals who went to university are most likely to default (followed by graduates)
+* Females are more at fault
+* With married and single individuals not having too much difference
+
+
+
+## Conclusion:
+Utilizing the ggplot2 function we were able to determine that the most at risk for defaults
+on their next credit card payments could be women between the ages of 20-30 and have been through
+higher education.
+=======
+---
+title: "TIDYVERSE VIGNETTE"
+author: "Keeno Glanville"
+date: "2022-11-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+# Tidyverse Vignette
+
+## Load kaggle set Data
+Github:https://raw.githubusercontent.com/kglan/FALL2022TIDYVERSE/main/UCI_Credit_Card.csv
+kaggle: https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset
+
+## Information on the Dataset
+
+* SEX: Gender (1=male, 2=female)
+* EDUCATION: (1=graduate school, 2=university, 3=high school, 4=others, 5=unknown, 6=unknown)
+* MARRIAGE: Marital status (1=married, 2=single, 3=others)
+* AGE: Age in years
+```{r}
+ccd <- read.csv("https://raw.githubusercontent.com/kglan/FALL2022TIDYVERSE/main/UCI_Credit_Card.csv")
+names(ccd)
+```
+
+
+## Research question 
+
+**What are the strongest contributing factors(nominal) towards client defaulting on their payments? Are there any trends?**
+
+
+
+## Cases 
+ 
+**Each case represents individuals with credit card debt and their current status with defaulting on their payment. There are *30,000* observations**
+
+```{r}
+dim(ccd)
+head(ccd)
+ccd_n <- ccd%>%
+  select(1,3,4,5,6,25)
+head(ccd_n)
+ccd1<- ccd_n%>%
+  filter(default.payment.next.month == 1)
+ccd0<- ccd_n%>%
+  filter(default.payment.next.month == 1)
+```
+
+
+## Analysis
+
+** How can we better understand this dataset and its correlations with nominal features?
+
+```{r}
+pairs(data = ccd, ~ ID + SEX + EDUCATION+ MARRIAGE + AGE+ default.payment.next.month)
+```
+
+
+## We now want to see how the Data correlates with default in the next month payment
+```{r}
+
+ggplot(ccd_n, aes(x = AGE, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = SEX, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = EDUCATION, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = MARRIAGE, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+
+ggplot(ccd_n, aes(x = AGE))+
+  geom_histogram()
+ggplot(ccd_n, aes(x = EDUCATION))+
+  geom_histogram()
+
+
+
+```
+
+## We Notice these factors have high instances of bankruptcy:
+* age ranges between 20-30 are more likely to default on their 
+next payment.
+* Individuals who went to university are most likely to default (followed by graduates)
+* Females are more at fault
+* With married and single individuals not having too much difference
+
+
+
+## Conclusion:
+Utilizing the ggplot2 function we were able to determine that the most at risk for defaults
+on their next credit card payments could be women between the ages of 20-30 and have been through
+higher education.
+
+## Mathew Katz Extension:
+```{r}
+head(ccd)
+```
+
+```{r}
+# Drawing a list of the variables that need to be changed
+categorical = c('SEX','EDUCATION', 'MARRIAGE', 'default.payment.next.month',
+               colnames(ccd)[grep("PAY_\\d", colnames(ccd))])
+
+# Changing variables type
+ccd[,categorical] = lapply(ccd[,categorical], function(var) as.factor(var))
+#str(ccd)
+summary(ccd)
+```
+```{r}
+# Creating a table of quantitative variables
+quantitative = ccd[, !colnames(ccd) %in% categorical]
+df = cbind.data.frame(quantitative, target = ccd$default.payment.next.month)
+
+# Creating a table of categorical variables
+qualitative = ccd[,categorical]
+```
+
+```{r}
+quantitative
+```
+```{r}
+qualitative
+```
+
+```{r}
+#Renaming column PAY_0 to PAY_1 and default.payment.next.month as DEFAULT
+
+colnames(ccd)[colnames(ccd) == "PAY_0"] = "PAY_1"
+
+colnames(ccd)[colnames((ccd)) == "default.payment.next.month"] = "DEFAULT"
+```
+
+```{r}
+#Convert int variables to factors
+ccd$DEFAULT = as.factor(ccd$DEFAULT)
+```
+
+```{r}
+ccd$SEX = as.factor(ccd$SEX)
+```
+
+```{r}
+table(ccd$DEFAULT)
+```
+
+```{r}
+#Add one feature GENDER
+ccd$GENDER = ifelse(ccd$SEX == 1, "Male", "Female")
+```
+
+```{r}
+# Bar Graph for gender
+ggplot(data = ccd, mapping = aes(x = GENDER, fill = DEFAULT)) +
+  geom_bar() +
+  ggtitle("Gender") +
+  stat_count(aes(label = ..count..), geom = "label")
+```
+```{r}
+#Merging 0, 5 and 6 to 4(others)
+ccd$EDUCATION = ifelse(ccd$EDUCATION == 0 |ccd$EDUCATION == 5 | ccd$EDUCATION == 6,
+       4, ccd$EDUCATION)
+```
+
+```{r}
+#Converting EDUCATION to categorical variable
+ccd$EDUCATION = as.factor(ccd$EDUCATION)
+```
+
+```{r}
+ggplot(data = ccd, mapping = aes(x = EDUCATION, fill = DEFAULT)) +
+  geom_bar() +
+  ggtitle("EDUCATION") +
+  stat_count(aes(label = ..count..), geom = "label")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+=======
+---
+title: "TIDYVERSE VIGNETTE"
+author: "Keeno Glanville"
+date: "2022-11-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+# Tidyverse Vignette
+
+## Load kaggle set Data
+Github:https://raw.githubusercontent.com/kglan/FALL2022TIDYVERSE/main/UCI_Credit_Card.csv
+kaggle: https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset
+
+## Information on the Dataset
+
+* SEX: Gender (1=male, 2=female)
+* EDUCATION: (1=graduate school, 2=university, 3=high school, 4=others, 5=unknown, 6=unknown)
+* MARRIAGE: Marital status (1=married, 2=single, 3=others)
+* AGE: Age in years
+```{r}
+ccd <- read.csv("https://raw.githubusercontent.com/kglan/FALL2022TIDYVERSE/main/UCI_Credit_Card.csv")
+names(ccd)
+```
+
+
+## Research question 
+
+**What are the strongest contributing factors(nominal) towards client defaulting on their payments? Are there any trends?**
+
+
+
+## Cases 
+ 
+**Each case represents individuals with credit card debt and their current status with defaulting on their payment. There are *30,000* observations**
+
+```{r}
+dim(ccd)
+head(ccd)
+ccd_n <- ccd%>%
+  select(1,3,4,5,6,25)
+head(ccd_n)
+ccd1<- ccd_n%>%
+  filter(default.payment.next.month == 1)
+ccd0<- ccd_n%>%
+  filter(default.payment.next.month == 1)
+```
+
+
+## Analysis
+
+** How can we better understand this dataset and its correlations with nominal features?
+
+```{r}
+pairs(data = ccd, ~ ID + SEX + EDUCATION+ MARRIAGE + AGE+ default.payment.next.month)
+```
+
+
+## We now want to see how the Data correlates with default in the next month payment
+```{r}
+
+ggplot(ccd_n, aes(x = AGE, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = SEX, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = EDUCATION, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+ggplot(ccd_n, aes(x = MARRIAGE, y = default.payment.next.month)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 6),element_line(size = 2))
+
+
+ggplot(ccd_n, aes(x = AGE))+
+  geom_histogram()
+ggplot(ccd_n, aes(x = EDUCATION))+
+  geom_histogram()
+
+
+
+```
+
+## We Notice these factors have high instances of bankruptcy:
+* age ranges between 20-30 are more likely to default on their 
+next payment.
+* Individuals who went to university are most likely to default (followed by graduates)
+* Females are more at fault
+* With married and single individuals not having too much difference
+
+
+
+## Conclusion:
+Utilizing the ggplot2 function we were able to determine that the most at risk for defaults
+on their next credit card payments could be women between the ages of 20-30 and have been through
+higher education.
+
+

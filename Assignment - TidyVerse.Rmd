@@ -1,0 +1,72 @@
+---
+title: "Data 607 - TidyVerse CREATE assignment"
+author: "Sanielle Worrell"
+date: "2022-10-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this assignment, you'll practice collaborating around a code project with GitHub. You could consider our collective work as building out a book of examples on how to use TidyVerse functions.
+
+GitHub repository: <https://github.com/acatlin/FALL2022TIDYVERSE>
+
+FiveThirtyEight.com datasets.
+
+Kaggle datasets.
+
+Your task here is to Create an Example. Using one or more TidyVerse packages, and any dataset from fivethirtyeight.com or Kaggle, create a programming sample "vignette" that demonstrates how to use one or more of the capabilities of the selected TidyVerse package with your selected dataset. (25 points)
+
+Load libraries
+
+```{r}
+library(ggplot2)
+library(gganimate)
+library(dplyr)
+library(gifski)
+library(ggthemes)
+```
+
+#### Read csv file
+
+```{r}
+world_energy <- read.csv("https://raw.githubusercontent.com/saniewor/MSDS/main/datasets/World%20Energy%20Consumption.csv")
+```
+
+I wanted to view the US energy usage of renewables such as solar and wind and the change over time using an animated plot. Original data can be found at the link : <https://www.kaggle.com/datasets/pralabhpoudel/world-energy-consumption>
+
+Regular ggplot using scale limits and theme
+
+```{r}
+usa_solar <- world_energy%>%
+filter(iso_code == "USA") %>%
+ggplot(aes(year, solar_consumption, group = 1)) + geom_point(na.rm=TRUE, color = "blue") + geom_line(na.rm=TRUE, color = "green")+
+  labs(title = "USA solar consumption over years", x = "Year", y = "Solar consumption")+theme_stata()+
+  xlim(2000,2025)
+usa_solar
+```
+
+Transition over time using gganimate
+
+```{r}
+animate(usa_solar + transition_reveal(year),fps = 5, duration = 15, height = 500, width = 675)
+```
+
+Looking at wind
+
+```{r}
+usa_wind <- world_energy%>%
+filter(iso_code == "USA") %>%
+ggplot(aes(year, wind_consumption)) + geom_point(na.rm=TRUE, color = "yellow") + geom_line(na.rm=TRUE, color = "red")+
+  labs(title = "USA wind consumption over years",x = "Year", y = "Wind consumption")+ theme_economist()+
+  xlim(1990,2025)
+usa_wind
+```
+
+Transition over time using gganimate
+
+```{r}
+animate(usa_wind + transition_reveal(year), fps = 5, duration = 15, height = 500, width = 675, )
+```

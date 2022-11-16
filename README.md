@@ -1,6 +1,30 @@
 
 # FALL2022TIDYVERSE
+
+
+# Using readxl package
+Initial Description and Link: 
+* Demonstrates how to load data in from excel spreadsheet using functions from package to limit import
+* https://github.com/JAbinette/FALL2022TIDYVERSE/blob/JAbinette-TidyVerse-readxl/607%20TidyVerse%20CREATE%20Assignment.Rmd
+
+
+
+=======
+
+
+Initial Description and Link: 
+* Demonstrates how to create an animated plot using gganimate and ggthemes
+*(https://github.com/saniewor/MSDS/blob/main/data607/Assignment%20-%20TidyVerse.Rmd)
+
+Updated to use dyplr and ggplot on classmate's package 
+https://github.com/saniewor/MSDS/blob/main/data607/Tidyverse_extend.Rmd
+
+
+=======
+DATA 607 Fall 2022 Tidyverse Collaboration Site
+=======
 DATA 607 Fall 2022 Tidyverse collaboration site- Sangeetha's Dplyr code
+
 
 
 * Basic Dplyr Functions demonstrated on "Crop Production & Climate Change" data 
@@ -8,6 +32,10 @@ DATA 607 Fall 2022 Tidyverse collaboration site- Sangeetha's Dplyr code
 =======
 # Sample
 Initial Description and Link: 
+
+* Demonstrates features of Tidyverse
+* https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/Data_607_TidyVerse_CREATE_Assignment_Vignette.rmd
+=======
 
 * Demonstrates features of tidyverse: dplyr and ggplot2
 * [https://github.com/karmaggyatso/CUNY_SPS/blob/main/Github_data607/tidyverse_assignment/data607_tidyverse.Rmd](https://github.com/karmaggyatso/FALL2022TIDYVERSE/blob/main/data607_tidyverse.Rmd)
@@ -25,6 +53,18 @@ Revision/Addition Description and Link:
 * Modified ggplot/forcats example to demonstrate sorting, other category
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
 
+
+Christian Uriostegui
+CREATE
+* Dplyr Vignette - Using Filter & Other Functions
+* Demonstrates how to use filter, select function from Dplyr
+* https://github.com/curiostegui/CUNY-SPS/blob/main/Data%20607/Assignment%20-%20Tidyverse%20CREATE/DATA607_Assignment_Tidyverse_Create.Rmd
+
+EXTEND
+* Utilized colour and scale_fill_hue to add color to Karma Gyatso's visualizations
+* Also included additional analysis
+* https://github.com/curiostegui/FALL2022TIDYVERSE/blob/main/Christian_Uriostegui_Tidyverse_EXTEND_Karma_Gyatso.Rmd
+=======
 
 
 Bridget Boakye
@@ -98,9 +138,34 @@ Initial Description and Link:
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
 =======
 
+
 ## Karma Gyatso
 * Demonstrates use of deplyr::select, ggplot2::facet_wrap and ggplot2::graphs
 * https://github.com/karmaggyatso/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
+=======
+# Jose Rodriguez
+Initial Description and Link: 
+* Demonstrates using readr to specify column data types and parse atomic vectors.
+* Extended to demonstrate the use of excluding columns with col_skip() and reading large files by chunking with read_delim_chunked()
+* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
+=======
+
+
+# Mahmud Hasan Al Raji Initial Submission:
+* Demonstrates features of tidyverse: qplot to Single Variables and Distribution of Two and More Variables.
+* https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
+* Extended by Enid Roman
+
+
+
+
+
+
+
+# Mahmud Hasan Al Raji Initial Submission:
+* Demonstrates features of tidyverse: qplot to Single Variables and Distribution of Two and More Variables.
+* https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
+* Extended by Enid Roman
 
 
 

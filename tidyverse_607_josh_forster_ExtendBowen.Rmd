@@ -1,0 +1,162 @@
+---
+title: 'Data607: Tidyverse Create'
+author: 'jfor: Josh Forster'
+date: "2022-10-26"
+output: html_document
+---
+
+
+#### Displaying Tidyverse Functionality
+
+The purpose of this vignette is to provide examples of different tidyverse functions to help with tidying and transforming data.
+
+#### Load Libaries
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+#### Read in FiveThirtyEight NBA Elo data
+
+The example data set in this case will be FiveThirtyEight's Elo statistics for all NBA seasons where data was available spanning back to 1946.
+
+```{r nba_historical}
+link = 'https://projects.fivethirtyeight.com/nba-model/nba_elo.csv'
+bball_csv <- read_csv(link,show_col_types=FALSE)
+
+```
+
+#### Reviewing season game counts for entire dataset
+
+Dplyr allows for chaining of commands using the pipe operator (%>% or |>) to list multiple processes in a logical flow.
+
+```{r review_summary}
+bball_csv |>
+    dplyr::group_by (season) |>
+    dplyr::summarize(cnt=n()) |>
+    dplyr::arrange(desc(season))
+```
+#### 1A: Filtering dataframes to review past 3 complete seasons
+
+Given that the current season only just begun in October 2022, we will look at the prior 3 seasons for these examples
+
+```{r}
+last_three_seasons <- bball_csv |>
+    dplyr::filter(season %in% c(2020,2021,2022))
+#alternatively
+last_three_seasons_v2 <- bball_csv |>
+    dplyr::filter(season>=2020 & season<2023)
+
+dim(last_three_seasons) == dim(last_three_seasons_v2)
+```
+
+The filter command allows for a number of different ways to slice the same data giving considerable flexibility to the end user. The dimensions are confirmed to be the same for either case 
+
+
+#### 1B: Select only the columns that are useful for the specified analysis
+
+Similar to dplyr's filter, the select function provides many alternatives to accomplish the same task depending on user preference. It allows for custom subset of columns to keep within a dataframe
+
+```{r}
+last_three_seasons |> select(date,season,team1,team2,elo1_pre,elo2_pre,elo1_post,elo2_post,score1,score2)
+```
+#### 1C: Aggregate data for review of comparative statistics
+
+One question to potentially answer is which teams outperformed their Elo ratings and increased their total Elo for the season. By using group_by and summarize, we can choose specific variables to group on before we calculate minimum and maximum elo ratings for each team1 and season.
+
+```{r}
+sum_stats <- last_three_seasons |>
+    group_by(team1,season) |>
+    summarize(min_elo = min(elo1_pre),
+              max_elo = max(elo1_post),
+              season_diff = max_elo - min_elo) |>
+    arrange(-season_diff)
+
+```
+
+We can sort the data within the dataframe to review the teams with the best improvement, but it doesn't necessarily give us a full picture except providing the top values.
+
+#### 2: Build a ggplot scatterplot to review the league wide changes in these metrics
+
+Building a base plot using ggplot, the geom_point is added as a layer to show a point within the scatterplot based on the x and y coordinating provided in the initial aesthetic which in this case is the minimum and maximum elo rating of a team. The specific aesthetics for the points themselves are provided within the geom_point instantiation which in this case adjusted the shape and size of the points to be driven off specific numeric variables in the dat.
+
+```{r}
+sum_stats %>%
+    ggplot(mapping=aes(min_elo,max_elo)) +
+    geom_point(aes(shape=as.character(season),size=season_diff)) +
+    geom_text(aes(label=team1),vjust=-1.5, size=2) +
+    labs(title='Elo Ratings over 3 prior NBA Seasons',caption='538 Data Set',size='Season Elo Difference',shape='Season')
+```
+
+Based on the initial head summary from the earlier chunk and this additional plot it is much more apparent that teams with lower initial expectations are typically the one with the biggest variability with in-season Elo ratings. This makes a bit of sense given that the model was somewhat bearish on these teams and they outperformed expectations during the season that were not initially accounted at their lowest point. There is a clear linear trend in the data overall and in general teams are improving their ratings over the full season.
+
+
+
+
+### Extend: Andrew Bowen
+Extending Josh's `tidyverse` code above. He did a great job of cleaning the ELO dataframe into a very usable format. I'd like to add some additional visualizations of the dataset to see if we can see any trends in our data.
+
+
+First up, let's take a look at the distribution of `season_diff` values:
+```{r}
+ggplot(sum_stats, aes(x=season_diff)) + geom_histogram(binwidth=20)
+```
+
+This looks slightly skewed right. I'm a Bulls fan so I'd like to plot a time series of their ELO ratings alone. We'll need to distinguish when the Bulls are listed as `team1` or `team2` and take the4 correctpost game elo rating.
+```{r}
+# isolating the ELO scores for the Bulls, as they are often listed as either team 1 or team 2
+bulls_games <- last_three_seasons_v2 %>% 
+  filter(team1 == "CHI" | team2 == "CHI") %>%
+  mutate(bulls_post_elo = ifelse(team1 == "CHI", elo1_post, elo2_post))
+                      
+
+bulls_games %>%
+  ggplot(aes(x = date, y = elo1_post)) + geom_line()
+
+```
+
+This is good but it's a little busy, let's group this time series data and get the average ELO rating for the Bulls by week.
+```{r}
+library(lubridate)
+bulls_by_week <- bulls_games %>% 
+                    group_by(week =  lubridate::floor_date(date, 'week')) %>%
+                    summarise(avg_post_elo = mean(bulls_post_elo))
+
+
+# Now let's plot our grouped data
+bulls_by_week %>%
+        ggplot(aes(x = week, y = avg_post_elo)) + geom_line()
+```
+
+Interesting to see the jump in average ELO ratings between the 2020 and 2021 seasons. This coincides with when the Bulls made some free agent signings and upgraded their roster. Let's see if we can make a scatter plot of post-game vs pre-game ELO ratings for the Bulls, colored by result (Win or Loss)
+```{r}
+# First we need to add a "results" column via ifelse that shows whether the Bulls won or not
+bulls_games %>%
+  mutate(result = ifelse( (team1== "CHI" & score1 > score2) | (team2=="CHI" & score2 > score1), "W", "L")) %>%
+  mutate(bulls_pre = ifelse(team1 == "CHI", elo1_pre, elo2_pre)) %>%
+  ggplot(aes(x = bulls_pre, y = bulls_post_elo, color=result)) + geom_point() + 
+  ggtitle("Postgame ELO ratings vs pre-game: Chicago Bulls") + xlab("Pre-game ELO rating") + ylab("Post-game ELO rating")
+
+  
+```
+
+I'd also like to see the average ELO rating by team. Will need to use the `pivot_longer` function included in `tidyr` in order to break out rows by team.
+```{r}
+team_elo <- last_three_seasons_v2 %>%
+  pivot_longer(cols=c(team1, team2))
+
+# Grouping by team (need to distinguish between team 1 and team 2)
+team_elo %>%
+  group_by(value) %>%
+  mutate(team_elo = ifelse(name == "team1", elo1_post, elo2_post)) %>%
+  summarise(mean_post_elo = mean(team_elo)) %>%
+  ggplot(aes(x = value, y=mean_post_elo)) + geom_bar(stat = 'identity') +
+  theme(axis.text.x = element_text(angle=90, hjust=1))
+
+```
+
+
+
+
+
