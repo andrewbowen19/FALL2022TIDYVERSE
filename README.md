@@ -2,6 +2,7 @@
 # FALL2022TIDYVERSE
 
 
+
 # Using readxl package
 Initial Description and Link: 
 * Demonstrates how to load data in from excel spreadsheet using functions from package to limit import
@@ -54,6 +55,14 @@ Initial Description and Link:
 
 
 I am using housing rent dataset from kaggle which has followign variables:
+=======
+# Data
+Initial Description and Link: 
+* https://www.kaggle.com/datasets/whenamancodes/dog-adoption?resource=download
+
+
+# Dplyr Cheat Sheet
+* https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf
 
 
 Revision/Addition Description and Link:
@@ -198,4 +207,9 @@ Tenant Preferred: Type of Tenant Preferred by the Owner or Agent.
 Bathroom: Number of Bathrooms.
 
 Point of Contact: Whom should you contact for more information regarding the Houses/Apartments/Flats.
+
+=======
+# Tidyverse Assignment
+* Imported data
+* Experimented with the transmute, filter, grouping, and summarizing functions.
 
