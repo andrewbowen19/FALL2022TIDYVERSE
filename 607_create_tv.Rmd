@@ -1,0 +1,88 @@
+---
+title: "TidyVerse CREATE assignment"
+author: "Khyati Naik"
+date: "`r Sys.Date()`"
+---
+
+In this assignment, you’ll practice collaborating around a code project with GitHub.  You could consider our collective work as building out a book of examples on how to use TidyVerse functions.
+
+GitHub repository: https://github.com/acatlin/FALL2022TIDYVERSE
+
+Your task here is to Create an Example.  Using one or more TidyVerse packages, and any dataset from fivethirtyeight.com or Kaggle, create a programming sample “vignette” that demonstrates how to use one or more of the capabilities of the selected TidyVerse package with your selected dataset. (25 points)
+
+You should clone the provided repository.  Once you have code to submit, you should make a pull request on the shared repository.  You should also update the README.md file with your example.
+
+After you’ve created your vignette, please submit your GitHub handle name in the submission link provided below. This will let your instructor know that your work is ready to be peer-graded.
+You should complete your submission on the schedule stated in the course syllabus.
+
+# Solution
+
+I have selected House Rent Prediction data from [kaggle](https://www.kaggle.com/datasets/iamsouravbanerjee/house-rent-prediction-dataset) for performing deepdive analysis using tidyverse package.  
+  
+In this assignment, we shall be looking at readr, dplyr and tidyr packages in tidyverse. we shall be looking at in depth about dplyr package which has many useful functions for data manipulation and data cleaning.  
+
+### Read libraries
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+```
+
+### readr package in tidyverse
+
+```{r}
+data_path <- "https://raw.githubusercontent.com/Naik-Khyati/create_tv/main/data/House_Rent_Dataset.csv"
+
+# read data
+house_rent_data <- read_csv(data_path)
+```
+
+### dplyr package in tidyverse
+
+__The [dplyr](https://www.geeksforgeeks.org/dplyr-package-in-r-programming/#:~:text=The%20dplyr%20package%20in%20R,most%20frequent%20data%20manipulation%20hurdles.) package in R Programming Language__ is a structure of data manipulation that provides a uniform set of verbs, helping to resolve the most frequent data manipulation hurdles.  
+  
+__The dplyr Package in R performs the steps given below quicker and in an easier fashion:__  
+* By limiting the choices the focus can now be more on data manipulation difficulties.
+* There are uncomplicated “verbs”, functions present for tackling every common data manipulation and the thoughts can be translated into code faster.
+* There are valuable backends and hence waiting time for the computer reduces.
+
+In the following few examples, we shall be looking at some of the important and frequently used verb functions (glimpse, rename, select, filter, arrange, group_by, summarize, mutate) from dplyr package.
+
+```{r}
+glimpse(house_rent_data)
+```
+
+```{r}
+house_rent_data <- house_rent_data %>% rename(dt_posted = `Posted On`, 
+                                              area_typ = `Area Type` ,  
+                                              area_loc = `Area Locality`,
+                                              furnishing_status = `Furnishing Status`,
+                                              tenant_preferred = `Tenant Preferred`,
+                                              point_of_contact = `Point of Contact`) %>% mutate(flag_rent = ifelse(Rent>15000,1,0))
+```
+
+```{r}
+house_rent_data %>% select(City,Rent,BHK) %>% 
+                         filter(City == 'Mumbai') %>%
+                         group_by(BHK) %>% 
+                         summarize(mean_rent=mean(Rent)) %>% 
+                         arrange(desc(mean_rent))
+```
+
+### tidyr package in tidyverse
+
+```{r}
+# Convert data from long to wide
+house_rent_data %>% select(City,BHK,Rent) %>% 
+                         group_by(City,BHK) %>% 
+                         summarize(mean_rent=mean(Rent)) %>% 
+                         arrange(desc(mean_rent)) %>% spread(BHK, mean_rent)
+```
+
+
+
+
+## Conclusion
+
+We are using housing rent data for this assignment. We looked at multiple functions from dplyr package such as glimpse, rename, select, filter, arrange, group_by, summarize, mutate etc. We also used tidyr package in tidyverse to convert data from long to wide.
+
+

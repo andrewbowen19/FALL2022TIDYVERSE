@@ -1,0 +1,95 @@
+---
+title: "Dplyr"
+author: "Mathew Katz"
+date: "2022-11-12"
+output:
+  pdf_document: default
+  html_document: default
+---
+When working with data you must:
+
+- Figure out what you want to do.
+
+- Describe those tasks in the form of a computer program.
+
+- Execute the program.
+
+The dplyr package makes these steps fast and easy:
+
+- By constraining your options, it helps you think about your data manipulation challenges.
+
+- It provides simple “verbs”, functions that correspond to the most common data manipulation tasks, to help you translate your thoughts into code.
+
+- It uses efficient backends, so you spend less time waiting for the computer.
+
+Let's load in dplyr through Tidyverse:
+```{r}
+library(tidyverse)
+```
+Import our data:
+```{r}
+df <- read_csv('bestsellers.csv', show_col_types = FALSE)
+```
+Best way to get an idea of what your data is/looks like:
+```{r}
+#Glimpse is like a transposed version of print(): columns run down the page, and data runs across. This makes it possible to see every column in a data frame. 
+glimpse(df)
+```
+```{r}
+#Returns the first parts of a vector, matrix, table, data frame or function. 
+head(df)
+```
+```{r}
+#Generic function used to produce result summaries of the results of various model fitting functions
+summary(df)
+```
+Find out your column names:
+```{r}
+names(df)
+```
+Data Exploration:
+```{r}
+#function used to subset a data frame, retaining all rows that satisfy your conditions
+df <- df %>%
+  filter(Reviews >= 10000)
+```
+Now we only have to look at the books that have significant book reviews making our dataset change from 550 to 225 books.
+
+What is that %>%? It's called a pipe. All of the dplyr functions take a data frame as the first argument. Rather than forcing the user to either save intermediate objects or nest functions, dplyr provides the %>% operator from magrittr. x %>% f(y) turns into f(x, y) so the result from one step is then “piped” into the next step. You can use the pipe to rewrite multiple operations that you can read left-to-right, top-to-bottom (reading the pipe operator as “then”).
+```{r}
+#orders the rows of a data frame by the values of selected columns
+df %>%
+  arrange(desc(`User Rating`)) %>%
+  head()
+```
+
+```{r}
+#Select variables in a data frame, using a concise mini-language that makes it easy to refer to variables based on their name 
+df %>%
+  select(Name, Author, Genre)
+```
+```{r}
+df %>%
+  select(where(is.character))
+```
+
+```{r}
+#adds new variables and preserves existing ones
+#Convert Book price from dollar to euro
+df %>%
+  mutate(Price = Price * 0.96)
+
+```
+
+```{r}
+#creates a new data frame.It will contain one column for each grouping variable and one column for each of the summary statistics that you have specified.
+df %>%
+  summarise(AVG_Price_In_Euros = mean(Price))
+```
+
+```{r}
+# takes an existing tbl and converts it into a grouped tbl where operations are performed "by group".
+df %>%
+  group_by(Year) %>%
+  summarise(AVG_Price_In_Euros = mean(Price))
+```

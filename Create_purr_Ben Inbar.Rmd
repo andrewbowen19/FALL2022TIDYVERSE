@@ -60,3 +60,14 @@ favdata_nested
 ###### favdata_nested <- favdata_nested |> mutate(regression=lm(sample_size ~ favorable, data=favdata_nested$data))
 ##### Note: a classification model may be more appropriate than a linear, to predict, say, the political candidate based on the polling information.
 <div style="margin-top:50px;">
+
+<div style="margin-top:50px;">
+I extend the scatterplot using `plotly`. The extended plot show the x/y values on mouve hover and also the the pollster.
+
+```{r message=FALSE, warning=FALSE}
+library(plotly)
+p1 <- ggplot(data=averages, aes(x=Avg_Sample_Size, y=Avg_Responding, label = as.factor(pollster))) +
+        geom_point(size=2, color='darkblue', shape=16) +
+        geom_smooth(method = 'lm', se=FALSE, color='red')
+ggplotly(p1)
+```
