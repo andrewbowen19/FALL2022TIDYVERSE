@@ -1,0 +1,112 @@
+---
+title: "TidyVerse CREATE assignment"  
+author: "Seung Min Song"
+date: "2022-10-30"
+output:
+  html_document:
+    df_print: paged
+  latex_engine: xelatex
+  pdf_document: null
+fontsize: 10pt
+linestretch: 1.5
+---
+
+GitHub: <https://github.com/seung-m1nsong/607>\
+rpubs: <https://rpubs.com/seungm1nsong/963598>
+  
+```{r setup, include=FALSE}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(magrittr)
+```
+\
+The tidyverse is quickly replacing the original R syntax with the advantage of being able to write intuitive code. The tidyverse package is a package that helps you install and load R packages that follow the tidy data paradigm at once. tidyverse is a package that installs and manages core packages belonging to the tidy package ecosystem, such as dplyr tidyr ggplot2, at once.
+\
+
+## Intuitive code: %>% operator
+\
+If I had to pick just one of the most important things in the tidyverse ecosystem, I would choose the %>% operator from the magrittr package. %>% can be entered with the shortcut Ctrl + Shift + M (OS X: Cmd + Shift + M) in Rstudio, and by using this, you can code in a stream of consciousness and write intuitive code. Let's find out the advantages of %>% through the head function.
+```{r}
+url <- "https://raw.githubusercontent.com/seung-m1nsong/607/main/tidyverse/car_purchasing.csv"
+dfdata <- read.csv(url) 
+```
+```{r}
+## head(dfdata)
+dfdata %>% head
+```
+
+```{r}
+dfdata %>% head(n = 10)
+```
+This command is much more intuitive than the existing head(subset(a, State == "NY")) as it shows the head by selecting only *NY* from *dfdata*.
+```{r}
+## head(subset(a, gender == "1"))
+dfdata %>% subset(gender == "1") %>% head
+```
+
+## Data Cleanup: dplyr
+\
+dplyr provides a set of functions to manipulate data effectively. Of these, group_by and summarize provide a differentiated value from the existing R syntax by easily showing summary statistics for each group. 
+
+### filter
+\
+filter is the same function as the subset function, and is used to filter data by specific conditions. Below is an example of extracting only men from the data.
+
+```{r}
+dfdata %>% filter(gender == "1") 
+```
+
+In filter, you can use AND conditions with , in addition to &, so readability is good. You can also select a specific range of a continuous variable by using the between function, which is also more intuitive than using the existing &. Let's look at an example of filtering between 50 and 60 years old.
+
+```{r}
+## Age between 50 and 60.
+dfdata %>% filter(age >= 50 & age <= 60)
+```
+
+### arrange: sort
+\
+arrange is a function that sorts data according to a specific order. Unlike the order function, which only tells the sort order, it shows sorted data.
+```{r}
+## dfdata[order(dfdata$Age), ]
+dfdata %>% arrange(age)
+```
+If there are two or more sort conditions, you can write them together with , and use the desc command to sort in descending order. Below is an example of sorting in ascending order on Age and descending order on gender.
+```{r}
+## dfdata[order(dfdata$age, -dfdata$gender), ]
+dfdata %>% arrange(age, desc(gender))
+```
+
+### mutate: create a variable
+\
+mutate is a function that creates a new variable. Let's create Old and Overweight variables that mean old age and obesity from Age and BMI variables.
+```{r}
+## dfdata$old <- as.integer(a$age >= 65); dfdata$middleclass <- as.integer(dfdata$annual_Salary >= 80000)
+dfdata %>% mutate(Old = as.integer(age >= 50),
+             middleclass = as.integer(annual_Salary >= 80000)
+             )
+```
+To show only new variables, use transmute instead of mutate.
+```{r}
+dfdata %>% transmute(Old = as.integer(age >= 50),
+             middleclass = as.integer(annual_Salary >= 80000)
+             )
+``` 
+
+### group_by and summarize
+\
+By using group_by and summarize, you can divide groups as desired and obtain summary statistics for each group. In basic R, the aggregate function performs the same function.
+```{r}
+dfdata %>% 
+  group_by(age, gender) %>% 
+  summarize(count = n(),
+            meanSalary = mean(annual_Salary))
+```
+To insert a string such as "age" in group_by, use the group_by_ function with an underscore (_).
+
+## Conclusion
+\
+So far, we have seen how to manipulate data using several packages in the tidyverse ecosystem. As I said earlier, the most important thing in this ecosystem is to perform coding according to the stream of consciousness using the %>% operator, and if you apply the rest of the contents one by one, at some point you will find yourself unable to live without the tidyverse. 
+
+
+
