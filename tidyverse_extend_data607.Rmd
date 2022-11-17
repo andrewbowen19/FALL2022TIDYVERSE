@@ -1,0 +1,107 @@
+---
+title: "DATA607_Tidyverse_Project"
+author: "Josh Iden, extended by Mahmud Hasan Al Raji"
+date: "2022-10-26"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# TIDYVERSE PROJECT
+
+This project uses data from [fivethirtyeight.com](https://projects.fivethirtyeight.com/republicans-trump-election-fraud/) to demonstrate tidyverse package capabilities.
+
+```{r load-packages}
+library(tidyverse)
+```
+
+## THE DATA
+
+```{r}
+url <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/election-deniers/fivethirtyeight_election_deniers.csv"
+df <- read.csv(url) 
+head(df)
+```
+
+The *dplyr* package allows us to use pipes to transform the data:
+
+```{r}
+df <- df |>
+  mutate(Stance = toupper(Stance))
+```
+
+It also let's us count the number of times a value occurs:
+
+```{r}
+stance_ct <- df |>
+      count(Stance) |>
+      arrange(desc(n))
+stance_ct
+```
+The *ggplot* package allows us to visualize this without the transformation. 
+
+```{r warning=FALSE}
+ggplot(df) +
+  geom_histogram(aes(x=Stance), stat="count") +
+  coord_flip()
+```
+The *tidyr* package lets us pivot data:
+
+```{r}
+by_state <- df |> # using dplyr pipe
+  group_by(State, Stance) |>
+  summarise(count = n()) |>
+  pivot_wider(names_from = Stance, values_from = count)
+by_state
+```
+
+# Extended part summary
+
+I will see the numbers of Republican nominee for different offices who took different stances on the 2020 election. I will also see the office wise nominee numbers who fully denied the election. Finally, I will find the incumbents by types for different stances and will also graphically represent the incumbent numbers by grouped barplot for each stance category.
+
+# Subsetting the df dataframe with only Incumbent,Office, and Stance columns by using select function from dplyr
+
+```{r }
+df1<-df %>% select(Incumbent,Office,Stance)
+head(df1)
+```
+# Finding nominee numbers for different offices who took different stances on the 2020 election by using group_by and summarize functions of dplyr 
+
+```{r }
+df2 <- df1 %>% 
+  group_by(Office) %>% 
+  summarize(count = n())
+df2
+```
+
+# Finding the Republican nominee numbers by offices who fully denied the 2020 election by filtering the required data by using filter function of dplyr 
+
+```{r}
+
+df3<-df1 %>% filter(Stance=="FULLY DENIED") %>% 
+group_by(Office) %>% summarize(count = n())
+df3
+```
+
+# Finding Incumbent numbers for different stance cateory by using group_by annd summarize functions of dplyr package
+
+```{r }
+df3 <- df1 %>% 
+  group_by(Stance,Incumbent) %>% 
+  summarize(count = n())
+df3
+```
+
+# Visualizing two types of incumbent numbers for each category of stance by grouped barplot using different functions of ggplot2 package
+
+```{r }
+ggplot(df3, aes(factor(Stance), count,fill=Incumbent)) + 
+  geom_bar(stat="identity", position = "dodge") + theme(axis.text.x = element_text(angle = 90, size = 10))+
+  scale_fill_brewer(palette = "Set1")
+```
+
+
+
+
