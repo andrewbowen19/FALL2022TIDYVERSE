@@ -81,7 +81,17 @@ EXTEND
 * Also included additional analysis
 * https://github.com/curiostegui/FALL2022TIDYVERSE/blob/main/Christian_Uriostegui_Tidyverse_EXTEND_Karma_Gyatso.Rmd
 =======
+# Gabriel Santos
+CREATE
+* Dplyr Vignette - Using Filter & Other Functions to analize Heart diseases.
+* Demonstrates how to use filter, select function from Dplyr
+* https://github.com/GabrielSantos33/DATA-607-Tidyverse/blob/main/Tidyverse%20Assignment.rmd
 
+EXTEND
+* Utilized ggplot: Histogram
+* Also included additional analysis
+* https://github.com/GabrielSantos33/DATA-607_Tidyverse_Extend/blob/main/Tidyverse%20Extend%20Assignment.Rmd
+=======
 
 Bridget Boakye
 * Uses dplyr left-join to join two datasets on specified keys
