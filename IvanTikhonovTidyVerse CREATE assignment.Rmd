@@ -1,0 +1,181 @@
+---
+title: "TidyVerse CREATE assignment"
+author: "IvanTikhonov"
+date: "2022-11-11"
+output: html_document
+---
+
+Your task here is to Create an Example.  Using one or more TidyVerse packages,
+and any dataset from fivethirtyeight.com or Kaggle, create a programming sample
+“vignette” that demonstrates how to use one or more of the capabilities
+of the selected TidyVerse package with your selected dataset.
+
+Getting started
+Lets load tidyverse package first.
+It includes readr, dplyr, tidyr, ggplot2, stringr, tibble, forcats and purr packages.
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(gganimate)
+library(dplyr)
+library(gifski)
+library(ggthemes)
+library(forcats)
+library(tibble)
+library(tidyverse)
+```
+
+
+We'll load a dataset from fivethirtyeight.com to demonstrate how the tidyverse package functions.
+This information demonstrates the terrible drivers in all 50 states of America who cause accidents.
+Reading the bad-drivers data from the github repository is the first step. The following fields make up the data:
+State Per billion kilometers, the number of drivers involved in fatal accidents
+Percentage of Speeding Drivers Involved In Fatal Collisions
+Alcohol-Impairment Rate Among Drivers Involved In Fatal Collisions
+percentage of distracted drivers who were involved in fatal collisions
+Percentage of motorists involved in fatal collisions who had never been in an accident before
+Costs of auto insurance ($)
+Insurance company losses from collisions per insured driver ($)
+
+Data read using readr package
+read_csv() function is from readr package, used for reading flat file data with comma separated values.
+
+```{r}
+# define URL for bad drivers data
+theURL <- 'https://raw.githubusercontent.com/IvanGrozny88/TidyVerse/main/bad-drivers_csv.csv'
+
+# read data
+bad_drivers <- read_csv(theURL)
+```
+```{r}
+head(bad_drivers)
+```
+In the next, we rename columns to replace big column names with shorter names.
+
+glimpse() function is from tibble package, used to see every column in a data frame.
+
+```{r}
+
+
+# rename columns
+colnames(bad_drivers) <- c("STATE", 
+                           "DRIVERS_INVOLVED", 
+                           "PERC_DRIVERS_SPEED", 
+                           "PERC_DRIVERS_ALCHO", 
+                           "PERC_DRIVERS_NOT_DIST", 
+                           "PERC_DRIVERS_NO_ACC", 
+                           "INS_PREM", 
+                           "LOSS_INSCOMP")
+
+glimpse(bad_drivers)
+```
+Using the programs dplyr, tidyr, and ggplot2, manipulate and visualize data
+PERC DRIVERS SPEED, PERC DRIVERS ALCHO, PERC DRIVERS NOT DIST, and PERC DRIVERS
+NO ACC are percentages of DRIVERS INVOLVED, as we may have seen.
+By using the specified percentage of the DRIVERS INVOLVED column, we will mutate 
+
+mutate() function is from dplyr package, adds new variables and preserves existing ones.
+
+```{r}
+# create new column DRIVERS_SPEED which will be (DRIVERS_INVOLVED*PERC_DRIVERS_SPEED)/100
+bad_drivers <- bad_drivers %>% 
+  mutate(DRIVERS_SPEED=(DRIVERS_INVOLVED*PERC_DRIVERS_SPEED)/100) %>% 
+  mutate(DRIVERS_ALCHO=(DRIVERS_INVOLVED*PERC_DRIVERS_ALCHO)/100) %>% 
+  mutate(DRIVERS_NOT_DIST=(DRIVERS_INVOLVED*PERC_DRIVERS_NOT_DIST)/100) %>% 
+  mutate(DRIVERS_NO_ACC=(DRIVERS_INVOLVED*PERC_DRIVERS_NO_ACC)/100)
+
+glimpse(bad_drivers)
+```
+With states on the X axis, drivers speed and drivers involved stacked together on the Y axis,
+we will create a stacked bar lot using the ggplot() technique in this step.
+To get the necessary columns, we first utilized the select() method to achieve this.
+The data for DRIVERS INVOLVED and DRIVERS SPEED were made longer using the gather()
+technique, and a stacked bar plot was then created using ggplot().
+
+The dplyr package's select() function only keeps the variables we've mentioned.
+The tidyr package's gather() method takes several
+columns and collapses them into key-value pairs while replicating any additional columns that are required.
+Every ggplot2 plot starts with a call to ggplot().
+
+```{r}
+bad_drivers %>% 
+  select(STATE, DRIVERS_INVOLVED, DRIVERS_SPEED) %>% 
+  gather(type, value, DRIVERS_INVOLVED:DRIVERS_SPEED) %>% 
+  ggplot(., aes(x = STATE,y = value, fill = type)) + 
+  geom_bar(position = "stack", stat="identity") + 
+  scale_fill_manual(values = c("red", "darkred")) + 
+  ylab("Drivers involved in Fatal collision while Speeding") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+Similar to the last stacked graphic, the following one has
+states on the X axis and DRIVERS ALCHO and DRIVERS INVOLVED stacked together on the Y axis.
+To get the necessary columns, we first utilized the select() method to achieve this.
+The data for DRIVERS INVOLVED and DRIVERS ALCHO were made
+long using the gather() method, and the stacked bar plot was created using ggplot().
+
+```{r}
+bad_drivers %>% 
+  select(STATE, DRIVERS_INVOLVED, DRIVERS_ALCHO) %>% 
+  gather(type, value, DRIVERS_INVOLVED:DRIVERS_ALCHO) %>% 
+  ggplot(., aes(x = STATE,y = value, fill = type)) + 
+  geom_bar(position = "stack", stat="identity") + 
+  scale_fill_manual(values = c("green", "darkgreen")) + 
+  ylab("Drivers involved in Fatal collision while Alcho-Impaired") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+Drivers NOT DIST and Drivers INVOLVED are stacked together on the Y axis
+of the next stacked figure, which has states on the X axis.
+To get the necessary columns, we first utilized the select() method to achieve this.
+The data for DRIVERS INVOLVED and DRIVERS NOT DIST were made
+lengthy using the gather() method, and the stacked bar plot was created using ggplot().
+
+```{r}
+bad_drivers %>% 
+  select(STATE, DRIVERS_INVOLVED, DRIVERS_NOT_DIST) %>% 
+  gather(type, value, DRIVERS_INVOLVED:DRIVERS_NOT_DIST) %>% 
+  ggplot(., aes(x = STATE,y = value, fill = type)) + 
+  geom_bar(position = "stack", stat="identity") + 
+  scale_fill_manual(values = c("lightyellow", "yellow")) + 
+  ylab("Drivers involved in Fatal collision not distracted") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+Drivers NO ACC and Drivers Involved are stacked together on the Y axis of the next stacked graphic,
+which has states on the X axis. 
+To get the necessary columns, we first utilized the select() method to achieve this.
+The data for DRIVERS INVOLVED and DRIVERS NO ACC were made
+long using the gather() technique, and the stacked bar plot 
+
+```{r}
+bad_drivers %>% 
+  select(STATE, DRIVERS_INVOLVED, DRIVERS_NO_ACC) %>% 
+  gather(type, value, DRIVERS_INVOLVED:DRIVERS_NO_ACC) %>% 
+  ggplot(., aes(x = STATE,y = value, fill = type)) + 
+  geom_bar(position = "stack", stat="identity") + 
+  scale_fill_manual(values = c("blue", "darkblue")) + 
+  ylab("Drivers involved in Fatal collision no pre accident") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+The bar plot for STATE vs. INS PREMIUM below was created using the ggplot() technique.
+
+
+```{r}
+bad_drivers %>% 
+  ggplot(., aes(x = STATE,y = INS_PREM)) + 
+  geom_bar(position = "stack", stat="identity") + 
+  ylab("Car Insurance Premium") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+Conclusion
+We've covered a variety of packages and their functionality here as we examine the bad drivers dataset.
+For complete set details refer (https://www.tidyverse.org/).
+
+https://www.tidyverse.org/packages/
+
+https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/
+
+
+
+
