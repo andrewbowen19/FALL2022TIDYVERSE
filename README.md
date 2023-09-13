@@ -2,6 +2,7 @@
 # FALL2022TIDYVERSE
 
 
+
 # Using readxl package
 Initial Description and Link: 
 * Demonstrates how to load data in from excel spreadsheet using functions from package to limit import
@@ -33,6 +34,7 @@ DATA 607 Fall 2022 Tidyverse collaboration site- Sangeetha's Dplyr code
 # Sample
 Initial Description and Link: 
 
+
 * Demonstrates features of Tidyverse
 * https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/Data_607_TidyVerse_CREATE_Assignment_Vignette.rmd
 =======
@@ -47,6 +49,20 @@ Initial Description and Link:
 =======
 * Demonstrates how to flip ggplot axes
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
+=======
+* Demonstrates how to perform data manipulation with dplyr package
+* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/607_create_tv.rmd
+
+
+I am using housing rent dataset from kaggle which has followign variables:
+=======
+# Data
+Initial Description and Link: 
+* https://www.kaggle.com/datasets/whenamancodes/dog-adoption?resource=download
+
+
+# Dplyr Cheat Sheet
+* https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf
 
 
 Revision/Addition Description and Link:
@@ -54,11 +70,28 @@ Revision/Addition Description and Link:
 * https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/ggplot_forcats.rmd
 
 
-Dplyr Vignette - Using Filter & Other Functions
+Christian Uriostegui
+CREATE
+* Dplyr Vignette - Using Filter & Other Functions
 * Demonstrates how to use filter, select function from Dplyr
 * https://github.com/curiostegui/CUNY-SPS/blob/main/Data%20607/Assignment%20-%20Tidyverse%20CREATE/DATA607_Assignment_Tidyverse_Create.Rmd
-=======
 
+EXTEND
+* Utilized colour and scale_fill_hue to add color to Karma Gyatso's visualizations
+* Also included additional analysis
+* https://github.com/curiostegui/FALL2022TIDYVERSE/blob/main/Christian_Uriostegui_Tidyverse_EXTEND_Karma_Gyatso.Rmd
+=======
+# Gabriel Santos
+CREATE
+* Dplyr Vignette - Using Filter & Other Functions to analize Heart diseases.
+* Demonstrates how to use filter, select function from Dplyr
+* https://github.com/GabrielSantos33/DATA-607-Tidyverse/blob/main/Tidyverse%20Assignment.rmd
+
+EXTEND
+* Utilized ggplot: Histogram
+* Also included additional analysis
+* https://github.com/GabrielSantos33/DATA-607_Tidyverse_Extend/blob/main/Tidyverse%20Extend%20Assignment.Rmd
+=======
 
 Bridget Boakye
 * Uses dplyr left-join to join two datasets on specified keys
@@ -132,8 +165,71 @@ Initial Description and Link:
 =======
 
 
+# Daria Dubovskaia extends Sanielle Worrell's assignment on World Energy Consumption
+
+*Added rename(), select(), distinct(), group_by(), arrange(), summarise() functions of dplyr package
+*Data [https://www.kaggle.com/datasets/pralabhpoudel/world-energy-consumption]
+*Original vignette by Sanielle Worrell's [https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/Assignment%20-%20TidyVerse.Rmd]
+*Extended code [https://github.com/ex-pr/DATA607/blob/tidyverse_create/DDubovskaia_Tidyverse_Extend.Rmd]
+
+=======
+=======
+## Karma Gyatso
+* Demonstrates use of deplyr::select, ggplot2::facet_wrap and ggplot2::graphs
+* https://github.com/karmaggyatso/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
+=======
+# Jose Rodriguez
+Initial Description and Link: 
+* Demonstrates using readr to specify column data types and parse atomic vectors.
+* Extended to demonstrate the use of excluding columns with col_skip() and reading large files by chunking with read_delim_chunked()
+* https://github.com/acatlin/FALL2022TIDYVERSE/blob/main/tidyverse_readr.rmd
+=======
+
+
+# Mahmud Hasan Al Raji Initial Submission:
+* Demonstrates features of tidyverse: qplot to Single Variables and Distribution of Two and More Variables.
+* https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
+* Extended by Enid Roman
 
 
 
 
+
+
+
+
+# Mahmud Hasan Al Raji Initial Submission:
+* Demonstrates features of tidyverse: qplot to Single Variables and Distribution of Two and More Variables.
+* https://github.com/enidroman/FALL2022TIDYVERSE/blob/main/data607_tidyverse_create_assignment.Rmd
+* Extended by Enid Roman
+
+
+
+=======
+BHK: Number of Bedrooms, Hall, Kitchen.
+
+Rent: Rent of the Houses/Apartments/Flats.
+
+Size: Size of the Houses/Apartments/Flats in Square Feet.
+
+Floor: Houses/Apartments/Flats situated in which Floor and Total Number of Floors (Example: Ground out of 2, 3 out of 5, etc.)
+
+Area Type: Size of the Houses/Apartments/Flats calculated on either Super Area or Carpet Area or Build Area.
+
+Area Locality: Locality of the Houses/Apartments/Flats.
+
+City: City where the Houses/Apartments/Flats are Located.
+
+Furnishing Status: Furnishing Status of the Houses/Apartments/Flats, either it is Furnished or Semi-Furnished or Unfurnished.
+
+Tenant Preferred: Type of Tenant Preferred by the Owner or Agent.
+
+Bathroom: Number of Bathrooms.
+
+Point of Contact: Whom should you contact for more information regarding the Houses/Apartments/Flats.
+
+=======
+# Tidyverse Assignment
+* Imported data
+* Experimented with the transmute, filter, grouping, and summarizing functions.
 
